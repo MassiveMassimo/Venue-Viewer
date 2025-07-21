@@ -6,13 +6,35 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B196FA3E2E296C510098F5C4 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = B196FA3D2E296C510098F5C4 /* Supabase */; };
+		B1B255D32E24D7D700A289FD /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = B1B255D22E24D7D700A289FD /* Realtime */; };
+		B1B255D82E24D86200A289FD /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = B1B255D72E24D86200A289FD /* Auth */; };
+		B1B255DA2E24D86200A289FD /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = B1B255D92E24D86200A289FD /* Functions */; };
+		B1B255DC2E24D86200A289FD /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = B1B255DB2E24D86200A289FD /* PostgREST */; };
+		B1B255DE2E24D86200A289FD /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = B1B255DD2E24D86200A289FD /* Storage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B1A11D3C2E1F6842009B9AC2 /* Venue Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Venue Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B1CA1FD52E2AA2C000B74DE5 /* Exceptions for "Venue Viewer" folder in "Venue Viewer" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Venue-Viewer-Info.plist",
+			);
+			target = B1A11D3B2E1F6842009B9AC2 /* Venue Viewer */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B1A11D3E2E1F6842009B9AC2 /* Venue Viewer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B1CA1FD52E2AA2C000B74DE5 /* Exceptions for "Venue Viewer" folder in "Venue Viewer" target */,
+			);
 			path = "Venue Viewer";
 			sourceTree = "<group>";
 		};
@@ -23,16 +45,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1B255DC2E24D86200A289FD /* PostgREST in Frameworks */,
+				B1B255DA2E24D86200A289FD /* Functions in Frameworks */,
+				B196FA3E2E296C510098F5C4 /* Supabase in Frameworks */,
+				B1B255D82E24D86200A289FD /* Auth in Frameworks */,
+				B1B255DE2E24D86200A289FD /* Storage in Frameworks */,
+				B1B255D32E24D7D700A289FD /* Realtime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B196FA3C2E296C510098F5C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B1A11D332E1F6841009B9AC2 = {
 			isa = PBXGroup;
 			children = (
 				B1A11D3E2E1F6842009B9AC2 /* Venue Viewer */,
+				B196FA3C2E296C510098F5C4 /* Frameworks */,
 				B1A11D3D2E1F6842009B9AC2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +101,12 @@
 			);
 			name = "Venue Viewer";
 			packageProductDependencies = (
+				B1B255D22E24D7D700A289FD /* Realtime */,
+				B1B255D72E24D86200A289FD /* Auth */,
+				B1B255D92E24D86200A289FD /* Functions */,
+				B1B255DB2E24D86200A289FD /* PostgREST */,
+				B1B255DD2E24D86200A289FD /* Storage */,
+				B196FA3D2E296C510098F5C4 /* Supabase */,
 			);
 			productName = "Venue Viewer";
 			productReference = B1A11D3C2E1F6842009B9AC2 /* Venue Viewer.app */;
@@ -94,6 +136,9 @@
 			);
 			mainGroup = B1A11D332E1F6841009B9AC2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B1A11D3D2E1F6842009B9AC2 /* Products */;
 			projectDirPath = "";
@@ -256,11 +301,18 @@
 				DEVELOPMENT_TEAM = 6SLG9DB9N5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Venue-Viewer-Info.plist";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app uses Bluetooth to detect nearby devices for crowd mapping";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app broadcasts to other devices for crowd mapping";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs background location access to continue tracking your venue presence even when the app is not actively in use.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app needs background location access to continue tracking your venue presence even when the app is not actively in use.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs location access to track your position within the venue and share it with other users for indoor navigation and presence features.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -287,11 +339,18 @@
 				DEVELOPMENT_TEAM = 6SLG9DB9N5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Venue-Viewer-Info.plist";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "This app uses Bluetooth to detect nearby devices for crowd mapping";
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app broadcasts to other devices for crowd mapping";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs background location access to continue tracking your venue presence even when the app is not actively in use.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app needs background location access to continue tracking your venue presence even when the app is not actively in use.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs location access to track your position within the venue and share it with other users for indoor navigation and presence features.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -330,6 +389,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B196FA3D2E296C510098F5C4 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		B1B255D22E24D7D700A289FD /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		B1B255D72E24D86200A289FD /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		B1B255D92E24D86200A289FD /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		B1B255DB2E24D86200A289FD /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		B1B255DD2E24D86200A289FD /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1B255D12E24D7D700A289FD /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B1A11D342E1F6841009B9AC2 /* Project object */;
 }
