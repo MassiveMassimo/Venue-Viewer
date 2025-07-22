@@ -7,7 +7,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
     private var realtimeChannel: RealtimeChannelV2?
     
-    // Observable properties for UI updates
     var currentLocation: CLLocation?
     var authorizationStatus: CLAuthorizationStatus = .notDetermined
     var isTrackingLocation = false

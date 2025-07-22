@@ -19,22 +19,9 @@
 		B1A11D3C2E1F6842009B9AC2 /* Venue Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Venue Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B1CA1FD52E2AA2C000B74DE5 /* Exceptions for "Venue Viewer" folder in "Venue Viewer" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Venue-Viewer-Info.plist",
-			);
-			target = B1A11D3B2E1F6842009B9AC2 /* Venue Viewer */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B1A11D3E2E1F6842009B9AC2 /* Venue Viewer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B1CA1FD52E2AA2C000B74DE5 /* Exceptions for "Venue Viewer" folder in "Venue Viewer" target */,
-			);
 			path = "Venue Viewer";
 			sourceTree = "<group>";
 		};
