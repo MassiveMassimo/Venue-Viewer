@@ -46,10 +46,18 @@ class NavigationViewModel {
         let endPoint = selectedDestination.entrancePoint
         
         if let route = pathfindingService.findShortestRoute(from: startPoint, to: endPoint) {
-            withAnimation {
-                resultDistance = route.distance
-                mapPathVertices = route.path
-                mapPathDrawnPercentage = 1
+            // First, set the path and distance without animation
+            resultDistance = route.distance
+            mapPathVertices = route.path
+            
+            // Reset the path drawing percentage to 0 (ensuring it's actually 0)
+            mapPathDrawnPercentage = 0
+            
+            // Use a small delay to ensure the path is set before starting the animation
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.routeDrawing) {
+                    self.mapPathDrawnPercentage = 1
+                }
             }
         }
     }

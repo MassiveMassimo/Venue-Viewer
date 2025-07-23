@@ -13,7 +13,8 @@ struct ContentView: View {
                 
                 // Map
                 MapView(viewModel: viewModel)
-                    .frame(width: 220, height: 430)
+                    .frame(width: 220)
+                    .frame(maxHeight: .infinity)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
                     .padding(.vertical, 20)
