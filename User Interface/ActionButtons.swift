@@ -19,13 +19,15 @@ struct ActionButtons: View {
                 selectedCategories?.wrappedValue.removeAll()  // hanya jika tersedia
             }) {
                 Text("Clear All")
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(.primary))
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.pink.opacity(0.5))
                     .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 7)
+                            .stroke(Color.black, lineWidth: 1))
             }
 
             Button(action: {
@@ -36,9 +38,9 @@ struct ActionButtons: View {
                     .fontWeight(.bold)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.pink)
+                    .background(Color(.primary))
                     .foregroundColor(.white)
-                    .cornerRadius(12)
+                    .cornerRadius(7)
             }
         }
         .padding(.top, 20)

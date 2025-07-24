@@ -10,26 +10,32 @@ struct BrandOffers: View {
     let isBottomSheetModal: Bool
     @State private var selectedOptions: Set<String> = []
     @State private var selectedCategories: Set<String> = []
-    
+
+       
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: isBottomSheetModal ? .center : .leading, spacing: 16){
             if(isBottomSheetModal) {
                 Text("Brand Offers")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    .padding(.top, 20)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 40)
                 Divider()
                     .padding(.top, 10)
+               
             } else {
-                Divider()
-                    .padding(.bottom, 10)
+//                Divider()
+//                    .padding(.bottom, 10)
                 Text("Brand Offers")
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .padding(.horizontal)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .padding(.top, 20)
+                    .padding(.bottom, 10)
+                    
+//                    .padding(.horizontal)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
             }
             
             HStack(spacing: 10) {
@@ -42,7 +48,9 @@ struct BrandOffers: View {
                         }
                     }) {
                         Text(option)
-                            .padding(10)
+                            .font(.caption)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 6)
                             .background(selectedOptions.contains(option) ? Color.pink : Color.clear)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 7)
@@ -50,12 +58,13 @@ struct BrandOffers: View {
                             )
                             .foregroundColor(.black)
                             .cornerRadius(8)
+                            
                     }
                 }
             }
-            .padding(.horizontal, 10)
-            .padding(.top, 20)
-            .padding(.bottom, 20)
+     
+//            .padding(.top, 20)
+            .padding(.bottom, 10)
             
             if(isBottomSheetModal) {
                 Divider()
@@ -68,8 +77,8 @@ struct BrandOffers: View {
             }
             
         }
-        .background(Color.white)
-        .cornerRadius(24)
+//        .background(Color.red)
+//        .cornerRadius(24)
     }
 }
 

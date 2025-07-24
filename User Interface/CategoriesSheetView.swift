@@ -18,7 +18,6 @@ struct Category: Identifiable, Equatable, Hashable {
 struct CategoriesSheetView: View {
     let isBottomSheetModal: Bool
     
-    // Updated list with SF Symbol names for each category
     let allCategories: [Category] = [
         .init(name: "Skincare", imageName: "skincare", selectedImageName: "skincare-fill"),
         .init(name: "Make Up", imageName: "makeup", selectedImageName: "makeup-fill"),
@@ -27,7 +26,7 @@ struct CategoriesSheetView: View {
         .init(name: "Nails", imageName: "nail", selectedImageName: "nail-fill"),
         .init(name: "Fragrance", imageName: "fragrance", selectedImageName: "fragrance-fill"),
         .init(name: "Tools", imageName: "tools", selectedImageName: "tools-fill"),
-        .init(name: "Mens care", imageName: "men", selectedImageName: "men-fill"),
+        .init(name: "Men's care", imageName: "men", selectedImageName: "men-fill"),
         .init(name: "Beauty Suplement", imageName: "beauty", selectedImageName: "beauty-fill"),
         .init(name: "Salon & Clinic", imageName: "salon", selectedImageName: "salon-fill")
     ]
@@ -44,28 +43,28 @@ struct CategoriesSheetView: View {
     
     var body: some View {
         VStack{
-            VStack(alignment: .center, spacing: 16) {
-                if(isBottomSheetModal) {
+         VStack(alignment: isBottomSheetModal ? .center : .leading, spacing: 16) {
+                if isBottomSheetModal {
                     Text("Categories")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding(.top, 20)
-                        .padding(.horizontal)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .center)
-                    
+//                        .padding(.top, 40)
                     Divider()
+                        .padding(.top, 10)
                 } else {
-                    Text("Categories")
-                        .font(.title3)
-                        .fontWeight(.medium)
+                        Text("Categories")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                         .padding(.top, 20)
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
+                
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(allCategories) { category in
-                        // The CategoryCard will now use the new imageName
                         CategoryCard(
                             category: category,
                             isSelected: selectedCategories.contains(category),
@@ -77,14 +76,16 @@ struct CategoriesSheetView: View {
                     }
                 }
                 .padding(.horizontal)
+              
                 if(isBottomSheetModal) {
+                    Divider()
                     ActionButtons(
                         selectedOptions: $selectedOptions,
                         selectedCategories: $selectedCategories
                     )
                 }
             }
-            .padding(.horizontal)
+//            .padding(.horizontal)
         }
         .background(Color.white)
         .cornerRadius(24)
@@ -114,16 +115,16 @@ struct CategoryCard: View {
                 Image(isSelected ? category.selectedImageName : category.imageName)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 50, height: 50) 
+                    .frame(width: 40, height: 40) 
                 Text(category.name)
-//                    .font(.body)
-                    .multilineTextAlignment(.center)
+                    .font(.caption)
                     .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                     .minimumScaleFactor(0.7)
                     .padding(.bottom, 6)
                     .foregroundColor(.primary)
             }
-//            .frame(width:80)
             .frame(width: 72, height: 72)
             .padding(5)
             .background(

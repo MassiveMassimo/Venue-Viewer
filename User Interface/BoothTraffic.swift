@@ -12,85 +12,55 @@ struct BoothTraffic: View {
     let isBottomSheetModal: Bool
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: isBottomSheetModal ? .center : .leading, spacing: 0) {
             if(isBottomSheetModal){
                 Text("Booth Traffics")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 40)
+                    .padding(.bottom, 20)
                 Divider()
-                    .padding(.top, 10)
+//                    .padding(.top, 10)
             } else {
-                Divider()
-                    .padding(.bottom, 10)
+//                Divider()
+//                    .padding(.bottom, 10)
                 Text("Booth Traffics")
-                    .font(.title3)
-                    .fontWeight(.medium)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
                     .padding(.top, 20)
-                    .padding(.horizontal)
+//                    .padding(.horizontal)
+//                    .padding(.leading, 18)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
             }
             
             HStack(spacing: 10) {
-                Button(action: {
-                    if selectedOptions.contains("High Crowd") {
-                        selectedOptions.remove("High Crowd")
-                    } else {
-                        selectedOptions.insert("High Crowd")
+                ForEach(["High Crowd", "Medium Crowd", "Low Crowd"], id: \.self) { option in
+                    Button(action: {
+                        if selectedOptions.contains(option) {
+                            selectedOptions.remove(option)
+                        } else {
+                            selectedOptions.insert(option)
+                        }
+                    }) {
+                        Text(option)
+                            .font(.caption)
+                            .padding(.horizontal, 18)
+                            .padding(.vertical, 6)
+                            .background(selectedOptions.contains(option) ? Color.pink : Color.clear)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(Color.black, lineWidth: 2)
+                            )
+                            .foregroundColor(.black)
+                            .cornerRadius(8)
                     }
-                }) {
-                    Text("High Crowd")
-                        .padding(10)
-                        .background(selectedOptions.contains("High Crowd") ? Color.pink : Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.black, lineWidth: 2)
-                        )
-                        .foregroundColor(.black)
-                        .cornerRadius(8)
-                }
-                
-                Button(action: {
-                    if selectedOptions.contains("Medium Crowd") {
-                        selectedOptions.remove("Medium Crowd")
-                    } else {
-                        selectedOptions.insert("Medium Crowd")
-                    }
-                }) {
-                    Text("Medium Crowd")
-                        .padding(10)
-                        .background(selectedOptions.contains("Medium Crowd") ? Color.pink : Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.black, lineWidth: 2)
-                        )
-                        .foregroundColor(.black)
-                        .cornerRadius(8)
-                }
-                
-                Button(action: {
-                    if selectedOptions.contains("Low Crowd") {
-                        selectedOptions.remove("Low Crowd")
-                    } else {
-                        selectedOptions.insert("Low Crowd")
-                    }
-                }) {
-                    Text("Low Crowd")
-                        .padding(10)
-                        .background(selectedOptions.contains("Low Crowd") ? Color.pink : Color.clear)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.black, lineWidth: 2)
-                        )
-                        .foregroundColor(.black)
-                        .cornerRadius(8)
                 }
             }
-            .padding(.horizontal, -10)
-            .padding(.vertical, 20)
+            .padding(.top, 20)
+            .padding(.bottom, 20)
             
             if(isBottomSheetModal) {
                 Divider()
@@ -99,8 +69,8 @@ struct BoothTraffic: View {
                 ActionButtons(
                     selectedOptions: $selectedOptions
                 )
-                .padding(.horizontal)
-                .padding(.top, 20)
+//                .padding(.horizontal)
+//                .padding(.top, 20)
                 
             }
         }

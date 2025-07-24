@@ -12,18 +12,28 @@ struct FilterModalView: View {
     var body: some View {
         VStack(alignment: .center) {
             Text("Filters")
-                .font(.title3)
-                .fontWeight(.bold)
-                .padding(.top, 30)
-            
+                .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .padding(.top, 30)
+                    .padding(.bottom, 10)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            Divider()
             CategoriesSheetView(isBottomSheetModal: false)
+                .padding(.bottom, 28)
+                .padding(.leading, 8)
+            Divider()
             BrandOffers(isBottomSheetModal: false)
+                .padding(.leading, 28)
+            Divider()
             BoothTraffic(isBottomSheetModal: false)
+                .padding(.leading, 28)
+            Divider()
             ActionButtons(
                 selectedOptions: $selectedOptions
             )
         }
-        Spacer()
+                .padding(.bottom, 30)     
+                .background(Color.white)
     }
 }
 

@@ -70,7 +70,7 @@ struct BottomSheetModal: View {
                 Button{}
                 label: {
                     Text("Cancel")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color(.primary))
                         
                 }
                 .padding(.trailing)
@@ -127,7 +127,7 @@ struct BottomSheetModal: View {
                             recentSearches.removeAll()
                         }
                         .font(.subheadline)
-                        .foregroundColor(.red)
+                        .foregroundColor(Color(.primary))
                     }
                     .padding(.horizontal)
                     
@@ -168,7 +168,7 @@ struct BottomSheetModal: View {
             
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(alphabet, id: \.self) { letter in
+                    ForEach(groupedBooths.keys.sorted(), id: \.self) { letter in
                         if let boothsForLetter = groupedBooths[letter], !boothsForLetter.isEmpty {
                             
                             Text(letter)
@@ -185,15 +185,15 @@ struct BottomSheetModal: View {
                                         category: booth.categories.first ?? "",
                                         imageName: "sample-image"
                                     )
-                                    .padding(.horizontal)
-                                    .padding(.vertical, 6)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .padding(.vertical, 10)
 
                                     if booth.id != boothsForLetter.last?.id {
                                         Divider()
                                     }
                                 }
                             }
-                            .padding(.vertical, 12)
+//                            .padding(.vertical, 12)
                             .background(
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
