@@ -1,0 +1,172 @@
+{
+  "DataName": "List Map",
+  "version": "1.0",
+  "booths": [
+    {
+      "id": 1,
+      "boothName": "Avory",
+      "boothNumber": "F01",
+      "Hall": "1",
+      "categories": ["Skincare"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 110, "y": 305 },
+        { "x": 120, "y": 315 },
+        { "x": 110, "y": 315 },
+        { "x": 120, "y": 305 }
+      ]
+    },
+    {
+      "id": 2,
+      "boothName": "Avoskin",
+      "boothNumber": "F02",
+      "Hall": "1",
+      "categories": ["Skincare"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 120, "y": 310 },
+        { "x": 130, "y": 320 },
+        { "x": 120, "y": 320 },
+        { "x": 130, "y": 310 }
+      ]
+    },
+    {
+      "id": 3,
+      "boothName": "Bali Body",
+      "boothNumber": "F03",
+      "Hall": "1",
+      "categories": ["Body Care"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 130, "y": 315 },
+        { "x": 140, "y": 325 },
+        { "x": 130, "y": 325 },
+        { "x": 140, "y": 315 }
+      ]
+    },
+    {
+      "id": 4,
+      "boothName": "Biore",
+      "boothNumber": "F04",
+      "Hall": "1",
+      "categories": ["Cleansing"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 140, "y": 320 },
+        { "x": 150, "y": 330 },
+        { "x": 140, "y": 330 },
+        { "x": 150, "y": 320 }
+      ]
+    },
+    {
+      "id": 5,
+      "boothName": "Cetaphil",
+      "boothNumber": "F05",
+      "Hall": "1",
+      "categories": ["Skincare"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 150, "y": 325 },
+        { "x": 160, "y": 335 },
+        { "x": 150, "y": 335 },
+        { "x": 160, "y": 325 }
+      ]
+    },
+    {
+      "id": 6,
+      "boothName": "CeraVe",
+      "boothNumber": "F06",
+      "Hall": "1",
+      "categories": ["Dermatology"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 160, "y": 330 },
+        { "x": 170, "y": 340 },
+        { "x": 160, "y": 340 },
+        { "x": 170, "y": 330 }
+      ]
+    },
+    {
+      "id": 7,
+      "boothName": "Drunk Elephant",
+      "boothNumber": "F07",
+      "Hall": "1",
+      "categories": ["Luxury"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 170, "y": 335 },
+        { "x": 180, "y": 345 },
+        { "x": 170, "y": 345 },
+        { "x": 180, "y": 335 }
+      ]
+    },
+    {
+      "id": 8,
+      "boothName": "Emina",
+      "boothNumber": "F08",
+      "Hall": "1",
+      "categories": ["Local Brand"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 180, "y": 340 },
+        { "x": 190, "y": 350 },
+        { "x": 180, "y": 350 },
+        { "x": 190, "y": 340 }
+      ]
+    },
+    {
+      "id": 9,
+      "boothName": "Erha",
+      "boothNumber": "F09",
+      "Hall": "1",
+      "categories": ["Dermatology"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 190, "y": 345 },
+        { "x": 200, "y": 355 },
+        { "x": 190, "y": 355 },
+        { "x": 200, "y": 345 }
+      ]
+    },
+    {
+      "id": 10,
+      "boothName": "Freeman",
+      "boothNumber": "F10",
+      "Hall": "1",
+      "categories": ["Mask"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 200, "y": 350 },
+        { "x": 210, "y": 360 },
+        { "x": 200, "y": 360 },
+        { "x": 210, "y": 350 }
+      ]
+    },
+    {
+      "id": 11,
+      "boothName": "Garnier",
+      "boothNumber": "F11",
+      "Hall": "1",
+      "categories": ["Drugstore"],
+      "flashSaleSchedule": [],
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 210, "y": 355 },
+        { "x": 220, "y": 365 },
+        { "x": 210, "y": 365 },
+        { "x": 220, "y": 355 }
+      ]
+    }
+  ]
+}
+
