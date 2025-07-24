@@ -2,99 +2,114 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = NavigationViewModel()
+    @State private var showingControls = true
+    @State private var isTrackingViewActive: Bool = false
     
     var body: some View {
+        // 1. Add a NavigationStack to enable NavigationLink
         NavigationStack {
-            VStack(spacing: 0) {
-                // Header
-                HeaderView()
-                    .padding(.horizontal, 20)
-                    .padding(.top)
-                
-                // Map
+            ZStack {
+                // Background map view
                 MapView(viewModel: viewModel)
-                    .frame(width: 220)
-                    .frame(maxHeight: .infinity)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                    .padding(.vertical, 20)
-                
-                // Controls Section
-                VStack(spacing: 12) {
-                    LocationPicker(
-                        title: "From:",
-                        selection: $viewModel.selectedStartingPoint,
-                        landmarks: viewModel.landmarks
-                    )
-                    
-                    LocationPicker(
-                        title: "To:",
-                        selection: $viewModel.selectedDestination,
-                        landmarks: viewModel.landmarks
-                    )
-                    
-                    if viewModel.resultDistance != 0 {
-                        RouteInfoView(distance: viewModel.resultDistance)
-                            .animation(.easeInOut, value: viewModel.resultDistance)
+                    .ignoresSafeArea(.all)
+                // 2. Attach the sheet directly to the background view
+                    .sheet(isPresented: $showingControls) {
+                        print("sheet shown")
+                    } content: {
+                        ControlsSheetView(viewModel: viewModel)
+                            .presentationDetents([.height(120), .large])
+                            .presentationBackgroundInteraction(.enabled(upThrough: .height(120)))
+                            .presentationDragIndicator(.visible)
+                            .interactiveDismissDisabled(true)
                     }
-                    
-                    FindRouteButton(action: viewModel.findRoute)
-                        .disabled(!viewModel.canFindRoute)
-                        .opacity(viewModel.canFindRoute ? 1 : 0.6)
-                        .animation(.easeInOut, value: viewModel.canFindRoute)
-                }
-                .padding(.horizontal, 20)
                 
-                Spacer()
-            }
-            .background(Color(.systemBackground))
-            .navigationBarHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: LocationTrackingView()) {
-                        Image(systemName: "location.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(.blue)
+                // UI controls that should remain on top and clickable
+                VStack {
+                    HStack {
+                        Spacer()
+                        // Replaced NavigationLink with Button as per instructions
+                        Button(action: { isTrackingViewActive = true }) {
+                            Image(systemName: "location.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(.blue)
+                                .padding(12)
+                                .background(
+                                    Circle()
+                                        .fill(Color(.systemBackground))
+                                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                                )
+                        }
+                        .padding(.trailing, 20)
                     }
+                    .padding(.top, 50) // Account for status bar
+                    Spacer()
                 }
             }
-        }
-        .onChange(of: viewModel.selectedDestination) { _, _ in
-            viewModel.clearResults()
-        }
-        .onChange(of: viewModel.selectedStartingPoint) { _, _ in
-            viewModel.clearResults()
+            .onChange(of: viewModel.selectedDestination) { _, _ in
+                viewModel.clearResults()
+            }
+            .onChange(of: viewModel.selectedStartingPoint) { _, _ in
+                viewModel.clearResults()
+            }
+            .onChange(of: isTrackingViewActive) { _, newValue in
+                if newValue {
+                    showingControls = false
+                } else {
+                    showingControls = true
+                }
+            }
+            .navigationDestination(isPresented: $isTrackingViewActive) {
+                LocationTrackingView()
+            }
         }
     }
 }
 
 // MARK: - Supporting Views
 
-struct HeaderView: View {
+struct ControlsSheetView: View {
+    @Bindable var viewModel: NavigationViewModel
+    
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
+        VStack(spacing: 16) {
+            // Title
+            HStack {
                 Text("Office Navigator")
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
-                
-                Text("Find the shortest route in the office!")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                Spacer()
             }
+            .padding(.horizontal, 20)
+            
+            // Controls Section
+            VStack(spacing: 12) {
+                LocationPicker(
+                    title: "From:",
+                    selection: $viewModel.selectedStartingPoint,
+                    landmarks: viewModel.landmarks
+                )
+                
+                LocationPicker(
+                    title: "To:",
+                    selection: $viewModel.selectedDestination,
+                    landmarks: viewModel.landmarks
+                )
+                
+                if viewModel.resultDistance != 0 {
+                    RouteInfoView(distance: viewModel.resultDistance)
+                        .animation(.easeInOut, value: viewModel.resultDistance)
+                }
+                
+                FindRouteButton(action: viewModel.findRoute)
+                    .disabled(!viewModel.canFindRoute)
+                    .opacity(viewModel.canFindRoute ? 1 : 0.6)
+                    .animation(.easeInOut, value: viewModel.canFindRoute)
+            }
+            .padding(.horizontal, 20)
             
             Spacer()
-            
-            NavigationLink(destination: LocationTrackingView()) {
-                Image(systemName: "location.circle.fill")
-                    .font(.title2)
-                    .foregroundColor(.blue)
-                    .padding(8)
-                    .background(
-                        Circle()
-                            .fill(Color(.systemGray6))
-                    )
-            }
         }
+        .background(Color(.systemBackground))
     }
 }
 
