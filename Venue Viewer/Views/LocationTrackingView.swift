@@ -45,6 +45,8 @@ struct LocationTrackingView: View {
                 ConfigurationInfoCard()
                     .cardStyle()
                 
+                NavigationLink("Indoor Map"){ IndoorMap(locationManager: locationManager)}
+                
                 Spacer(minLength: 20)
             }
             .padding(.horizontal)
