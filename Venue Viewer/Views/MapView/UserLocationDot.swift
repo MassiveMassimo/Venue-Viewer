@@ -17,8 +17,8 @@ struct UserLocationDot: View {
             .fill(Color.blue)
             .frame(width: 15*scale, height: 15*scale)
             .position(
-                x: userMapPosition.x + offset.width,
-                y: userMapPosition.y + offset.height
+                x: userMapPosition.x,
+                y: userMapPosition.y
             )
     }
 }

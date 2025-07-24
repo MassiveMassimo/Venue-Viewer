@@ -33,20 +33,19 @@ struct IndoorMap: View {
                 Color.clear
                 
                 image
-                    .scaleEffect(scale)
-                    .offset(offset)
                 
                 if let location = locationManager.currentLocation {
                     let mapPoint = location.toMapPoint(in: imgLoc)
                     
-                    Text("mapLoc: \(mapPoint.x), \(mapPoint.y)")
-                        .frame(maxHeight: .infinity, alignment: .topLeading)
-                    
+                    Text("mapLoc: \(mapPoint.x), \(mapPoint.y) \n scale: \(scale)")
+//                        .frame(maxHeight: .infinity, alignment: .topLeading)
                     UserLocationDot(userMapPosition: mapPoint, scale: 1/scale, offset: offset)
                 }else {
                     Text("Location not found").frame(maxHeight: .infinity, alignment: .topLeading)
                 }
             }
+            .scaleEffect(scale)
+            .offset(offset)
             .contentShape(Rectangle())
             .gesture(
                 SimultaneousGesture(
