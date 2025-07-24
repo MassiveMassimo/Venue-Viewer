@@ -37,9 +37,16 @@ struct IndoorMap: View {
                 if let location = locationManager.currentLocation {
                     let mapPoint = location.toMapPoint(in: imgLoc)
                     
-                    Text("mapLoc: \(mapPoint.x), \(mapPoint.y) \n scale: \(scale)")
+//                    Text("mapLoc: \(mapPoint.x), \(mapPoint.y) \n scale: \(scale)")
 //                        .frame(maxHeight: .infinity, alignment: .topLeading)
-                    UserLocationDot(userMapPosition: mapPoint, scale: 1/scale, offset: offset)
+                    UserLocationDot(userMapPosition: mapPoint, scale: 1/scale, offset: offset, color: Color.blue)
+                    let otherUsers = locationManager.presenceUsers
+                    if !otherUsers.isEmpty {
+                        ForEach(otherUsers) { user in
+                            let userMapPoint = user.location.toMapPoint(in: imgLoc)
+                            UserLocationDot(userMapPosition: userMapPoint, scale: 1/scale, offset: offset, color: Color.green)
+                        }
+                    }
                 }else {
                     Text("Location not found").frame(maxHeight: .infinity, alignment: .topLeading)
                 }
