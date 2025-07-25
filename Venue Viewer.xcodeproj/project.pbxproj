@@ -25,11 +25,6 @@
 			path = "Venue Viewer";
 			sourceTree = "<group>";
 		};
-		CBD346C72E3217CD000BAE86 /* User Interface */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "User Interface";
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +54,6 @@
 		B1A11D332E1F6841009B9AC2 = {
 			isa = PBXGroup;
 			children = (
-				CBD346C72E3217CD000BAE86 /* User Interface */,
 				B1A11D3E2E1F6842009B9AC2 /* Venue Viewer */,
 				B196FA3C2E296C510098F5C4 /* Frameworks */,
 				B1A11D3D2E1F6842009B9AC2 /* Products */,
@@ -91,7 +85,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				B1A11D3E2E1F6842009B9AC2 /* Venue Viewer */,
-				CBD346C72E3217CD000BAE86 /* User Interface */,
 			);
 			name = "Venue Viewer";
 			packageProductDependencies = (

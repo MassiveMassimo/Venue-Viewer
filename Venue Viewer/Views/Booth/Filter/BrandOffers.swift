@@ -1,43 +1,45 @@
 //
-//  BoothTraffic.swift
+//  BrandOffers.swift
 //  FilterSearch
 //
 //  Created by Mirabella on 21/07/25.
 //
-
 import SwiftUI
 
-struct BoothTraffic: View {
-    @State private var selectedOptions: Set<String> = []
+struct BrandOffers: View {
     let isBottomSheetModal: Bool
+    @Binding var selectedOptions: Set<String>
+//    @State private var selectedCategories: Set<String> = []
+
+       
     
     var body: some View {
-        VStack(alignment: isBottomSheetModal ? .center : .leading, spacing: 0) {
-            if(isBottomSheetModal){
-                Text("Booth Traffics")
+        VStack(alignment: isBottomSheetModal ? .center : .leading, spacing: 16){
+            if(isBottomSheetModal) {
+                Text("Brand Offers")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 40)
-                    .padding(.bottom, 20)
                 Divider()
-//                    .padding(.top, 10)
+                    .padding(.top, 10)
+               
             } else {
 //                Divider()
 //                    .padding(.bottom, 10)
-                Text("Booth Traffics")
+                Text("Brand Offers")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .padding(.top, 20)
+                    .padding(.bottom, 10)
+                    
 //                    .padding(.horizontal)
-//                    .padding(.leading, 18)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
             }
             
             HStack(spacing: 10) {
-                ForEach(["High Crowd", "Medium Crowd", "Low Crowd"], id: \.self) { option in
+                ForEach(["Flash Sale", "Freebies", "Hands On Tester"], id: \.self) { option in
                     Button(action: {
                         if selectedOptions.contains(option) {
                             selectedOptions.remove(option)
@@ -56,29 +58,35 @@ struct BoothTraffic: View {
                             )
                             .foregroundColor(.black)
                             .cornerRadius(8)
+                            
                     }
                 }
             }
-            .padding(.top, 20)
-            .padding(.bottom, 20)
+     
+//            .padding(.top, 20)
+            .padding(.bottom, 10)
             
             if(isBottomSheetModal) {
                 Divider()
-                    .padding(.vertical, 10)
                 
                 ActionButtons(
-                    selectedOptions: $selectedOptions
+                    brandOptions: $selectedOptions,
+                    boothTrafficOptions: nil,
+                    categoriesOptions: nil
                 )
-//                .padding(.horizontal)
-//                .padding(.top, 20)
-                
+                .padding(.horizontal)
+                .padding(.top, 20)
             }
+            
         }
+//        .background(Color.red)
+//        .cornerRadius(24)
     }
 }
 
-struct BoothTrafficPreviews: PreviewProvider {
-    static var previews: some View {
-        BoothTraffic(isBottomSheetModal: false)
-    }
-}
+
+//struct BrandOffers_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BrandOffers(isBottomSheetModal:false)
+//    }
+//}

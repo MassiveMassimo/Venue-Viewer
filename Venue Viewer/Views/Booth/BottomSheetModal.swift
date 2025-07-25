@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct BottomSheetModal: View {
+    @Binding var isExpanded: Bool
+    
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
     @State private var isCategorySheetPresented = false
@@ -14,6 +16,10 @@ struct BottomSheetModal: View {
     @State private var isBrandOffersPresented = false
     @State private var isBoothTrafficPresented = false
     @State private var isFilterPresented = false
+    
+    @State var brandOptions: Set<String> = []
+    @State var boothTrafficOptions: Set<String> = []
+    @State var categoriesOptions: Set<String> = []
     
     var allBooths: [Booth]
     let alphabet = (65...90).map { String(UnicodeScalar($0)!) }
@@ -67,10 +73,12 @@ struct BottomSheetModal: View {
                 .cornerRadius(12)
                 .padding(.horizontal)
                 
-                Button{}
+                Button{isExpanded = false}
                 label: {
-                    Text("Cancel")
-                        .foregroundStyle(Color(.primary))
+                    if isExpanded {
+                        Text("Cancel")
+                            .foregroundStyle(Color(.primary))
+                    }
                         
                 }
                 .padding(.trailing)
@@ -170,6 +178,7 @@ struct BottomSheetModal: View {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(groupedBooths.keys.sorted(), id: \.self) { letter in
                         if let boothsForLetter = groupedBooths[letter], !boothsForLetter.isEmpty {
+                            //TODO: Jadiin navigation link, add booth detail
                             
                             Text(letter)
                                 .font(.caption)
@@ -214,37 +223,40 @@ struct BottomSheetModal: View {
         .background(Color.white)
         .cornerRadius(24)
         .sheet(isPresented: $isCategorySheetPresented) {
-            CategoriesSheetView(isBottomSheetModal: true)
+            CategoriesSheetView(selectedOptions: $categoriesOptions, isBottomSheetModal: true)
                 .presentationDetents([.fraction(0.65), .large])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(24)
         }
         .sheet(isPresented: $isBrandOffersPresented) {
-            BrandOffers(isBottomSheetModal: true)
+            BrandOffers(isBottomSheetModal: true, selectedOptions: $brandOptions)
                 .presentationDetents([.fraction(0.3)])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(24)
         }
         .sheet(isPresented: $isBoothTrafficPresented) {
-            BoothTraffic(isBottomSheetModal: true)
+            BoothTraffic(selectedOptions: $boothTrafficOptions, isBottomSheetModal: true)
                 .presentationDetents([.fraction(0.3)])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(24)
         }
         .sheet(isPresented: $isFilterPresented) {
-            FilterModalView()
+            FilterModalView(brandOptions: $brandOptions, boothTrafficOptions: $boothTrafficOptions, categoriesOptions: $categoriesOptions)
                 .presentationDetents([.fraction(1.0), .large  ])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(24)
         }
+        .onChange(of: isExpanded) {
+            searchText = ""
+        }
     }
 }
 
-#Preview {
-    let sampleBooths = [
-        Booth(id: 1, boothName: "Avory", boothNumber: "F01", hall: "1", categories: ["Skincare"], flashSaleSchedule: [], crowdlevel: 0, coordinates: [Coordinate(long: 106.801, lat: -6.101)], mapCoor: [MapCoor(x: 110, y: 305)]),
-        Booth(id: 2, boothName: "Avoskin", boothNumber: "F02", hall: "1", categories: ["Skincare"], flashSaleSchedule: [], crowdlevel: 0, coordinates: [Coordinate(long: 106.802, lat: -6.102)], mapCoor: [MapCoor(x: 120, y: 310)])
-    ]
-    
-    return BottomSheetModal(allBooths: sampleBooths)
-}
+//#Preview {
+//    let sampleBooths = [
+//        Booth(id: 1, boothName: "Avory", boothNumber: "F01", hall: "1", categories: ["Skincare"], flashSaleSchedule: [], crowdlevel: 0,  mapCoordinates: [MapCoor(x: 110, y: 305)]),
+//        Booth(id: 2, boothName: "Avoskin", boothNumber: "F02", hall: "1", categories: ["Skincare"], flashSaleSchedule: [], crowdlevel: 0, mapCoordinates: [MapCoor(x: 120, y: 310)])
+//    ]
+//    
+//    BottomSheetModal(, allBooths: sampleBooths)
+//}

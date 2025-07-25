@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct FilterModalView: View {
-    @State private var selectedOptions: Set<String> = []
+//    @State private var selectedOptions: Set<String> = []
+    @Binding var brandOptions: Set<String>
+    @Binding var boothTrafficOptions: Set<String>
+    @Binding var categoriesOptions: Set<String>
     var body: some View {
         VStack(alignment: .center) {
             Text("Filters")
@@ -18,18 +21,20 @@ struct FilterModalView: View {
                     .padding(.bottom, 10)
                     .frame(maxWidth: .infinity, alignment: .center)
             Divider()
-            CategoriesSheetView(isBottomSheetModal: false)
+            CategoriesSheetView(selectedOptions: $categoriesOptions, isBottomSheetModal: false)
                 .padding(.bottom, 28)
                 .padding(.leading, 8)
             Divider()
-            BrandOffers(isBottomSheetModal: false)
+            BrandOffers(isBottomSheetModal: false, selectedOptions: $brandOptions)
                 .padding(.leading, 28)
             Divider()
-            BoothTraffic(isBottomSheetModal: false)
+            BoothTraffic(selectedOptions: $boothTrafficOptions, isBottomSheetModal: false)
                 .padding(.leading, 28)
             Divider()
             ActionButtons(
-                selectedOptions: $selectedOptions
+                brandOptions: $brandOptions,
+                boothTrafficOptions: $boothTrafficOptions,
+                categoriesOptions: $categoriesOptions
             )
         }
                 .padding(.bottom, 30)     
@@ -37,6 +42,6 @@ struct FilterModalView: View {
     }
 }
 
-#Preview {
-    FilterModalView()
-}
+//#Preview {
+//    FilterModalView()
+//}
