@@ -25,11 +25,27 @@ struct BottomSheetModal: View {
     let alphabet = (65...90).map { String(UnicodeScalar($0)!) }
     
     var filteredBooths: [Booth] {
-        if searchText.isEmpty {
-            return allBooths
-        } else {
-            return allBooths.filter { $0.boothName.localizedCaseInsensitiveContains(searchText) }
+        allBooths.filter { booth in
+            let matchesSearch = searchText.isEmpty || booth.boothName.localizedCaseInsensitiveContains(searchText)
+            //                let matchesBrand = brandOptions.isEmpty || !Set(booth.flashSaleSchedule).isDisjoint(with: brandOptions)
+            
+            let matchesCategory = categoriesOptions.isEmpty || !Set(booth.categories).isDisjoint(with: categoriesOptions)
+            
+            // Convert trafficLevel Int into string label
+            let trafficLabel: String = {
+                switch booth.crowdlevel {
+                case 0: return "Low Crowd"
+                case 1: return "Medium Crowd"
+                case 2: return "High Crowd"
+                default: return "Unknown"
+                }
+            }()
+            
+            let matchesTraffic = boothTrafficOptions.isEmpty || boothTrafficOptions.contains(trafficLabel)
+            
+            return matchesSearch && matchesTraffic && matchesCategory
         }
+        
     }
     
     var groupedBooths: [String: [Booth]] {
@@ -79,7 +95,7 @@ struct BottomSheetModal: View {
                         Text("Cancel")
                             .foregroundStyle(Color(.primary))
                     }
-                        
+                    
                 }
                 .padding(.trailing)
                 
@@ -156,7 +172,7 @@ struct BottomSheetModal: View {
                                 isSearchFocused = true
                             }
                             
-                          
+                            
                             if index != recentSearches.count - 1 {
                                 Divider()
                                     .padding(.leading, 20)
@@ -186,8 +202,8 @@ struct BottomSheetModal: View {
                                 .padding(.bottom, 1)
                                 .padding(.leading, 15)
                             VStack(alignment: .leading, spacing: 0) {
-
-                               
+                                
+                                
                                 ForEach(boothsForLetter) { booth in
                                     BrandCard(
                                         boothName: booth.boothName,
@@ -196,13 +212,13 @@ struct BottomSheetModal: View {
                                     )
                                     .frame(maxWidth: .infinity, alignment: .center)
                                     .padding(.vertical, 10)
-
+                                    
                                     if booth.id != boothsForLetter.last?.id {
                                         Divider()
                                     }
                                 }
                             }
-//                            .padding(.vertical, 12)
+                            //                            .padding(.vertical, 12)
                             .background(
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
@@ -257,6 +273,6 @@ struct BottomSheetModal: View {
 //        Booth(id: 1, boothName: "Avory", boothNumber: "F01", hall: "1", categories: ["Skincare"], flashSaleSchedule: [], crowdlevel: 0,  mapCoordinates: [MapCoor(x: 110, y: 305)]),
 //        Booth(id: 2, boothName: "Avoskin", boothNumber: "F02", hall: "1", categories: ["Skincare"], flashSaleSchedule: [], crowdlevel: 0, mapCoordinates: [MapCoor(x: 120, y: 310)])
 //    ]
-//    
+//
 //    BottomSheetModal(, allBooths: sampleBooths)
 //}
