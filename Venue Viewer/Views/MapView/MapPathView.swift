@@ -31,6 +31,5 @@ struct MapPathView: View {
                 path.addLine(to: transformedEnd)
             }
         }
-        .stroke(Color.gray.opacity(0.3), lineWidth: 2)
     }
 }
