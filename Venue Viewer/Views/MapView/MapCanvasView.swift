@@ -47,9 +47,6 @@ struct MapCanvasView: View {
     @State private var offset: CGSize = .zero
     @State private var rotation: Angle = .degrees(0)
     
-    // Alert states
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
     
     init(viewModel: NavigationViewModel, imageName: String = "gop_map") {
         self.viewModel = viewModel
@@ -86,11 +83,6 @@ struct MapCanvasView: View {
             }
         }
         .ignoresSafeArea()
-        .alert("Landmark Tapped", isPresented: $showingAlert) {
-            Button("OK") { }
-        } message: {
-            Text(alertMessage)
-        }
     }
     
     @ViewBuilder
@@ -134,10 +126,10 @@ struct MapCanvasView: View {
                     .shadow(color: Color.black.opacity(0.3), radius: 3)
                 }
                 
-                // Starting point marker
+                // Starting point marker - positioned at entrancePoint for navigation accuracy
                 if viewModel.selectedStartingPoint.entrancePoint != .zero {
                     let startPosition = transformPointToDisplay(
-                        point: viewModel.selectedStartingPoint.entrancePoint,
+                        point: viewModel.selectedStartingPoint.entrancePoint, // Use entrancePoint for navigation markers
                         coordinateDisplayFrame: displayFrame
                     )
                     MapMarkerView(
@@ -147,10 +139,10 @@ struct MapCanvasView: View {
                     )
                 }
                 
-                // Destination marker
+                // Destination marker - positioned at entrancePoint for navigation accuracy
                 if viewModel.selectedDestination.entrancePoint != .zero {
                     let endPosition = transformPointToDisplay(
-                        point: viewModel.selectedDestination.entrancePoint,
+                        point: viewModel.selectedDestination.entrancePoint, // Use entrancePoint for navigation markers
                         coordinateDisplayFrame: displayFrame
                     )
                     MapMarkerView(
@@ -166,11 +158,11 @@ struct MapCanvasView: View {
     
     @ViewBuilder
     private func landmarkOverlays(in geometry: GeometryProxy) -> some View {
-        // Landmark touch areas - positioned on top and manually transformed
+        // Landmark touch areas - positioned using touchPosition for accurate visual placement
         if let displayFrame = coordinateDisplayFrame {
             ForEach(viewModel.landmarks) { landmark in
                 let basePosition = transformPointToDisplay(
-                    point: landmark.entrancePoint,
+                    point: landmark.touchPosition, // Use touchPosition for visual touch targets
                     coordinateDisplayFrame: displayFrame
                 )
                 
@@ -223,20 +215,11 @@ struct MapCanvasView: View {
     // MARK: - Private Functions
     
     private func handleLandmarkTap(_ landmark: Landmark) {
-        print("🔥 handleLandmarkTap called for: \(landmark.name)")
+        // Store the selected landmark and show detail sheet
+        viewModel.selectedLandmark = landmark
         
-        // Show alert with landmark information
-        alertMessage = "You tapped on \(landmark.name)"
-        showingAlert = true
-        
-        // Update the view model or application state as needed
-        if viewModel.selectedStartingPoint.entrancePoint == .zero {
-            viewModel.selectedStartingPoint = landmark
-        } else if viewModel.selectedDestination.entrancePoint == .zero {
-            viewModel.selectedDestination = landmark
-        } else {
-            viewModel.selectedStartingPoint = landmark
-        }
+        // Close controls sheet first, then show landmark detail sheet
+        viewModel.closeControlsAndShowLandmarkDetail()
     }
     
     private func updateCoordinateDisplayFrame(containerSize: CGSize) {
@@ -245,6 +228,7 @@ struct MapCanvasView: View {
             originalSize: imageSize,
             containerSize: containerSize
         )
+        
     }
     
     private func getImageSize() -> CGSize {

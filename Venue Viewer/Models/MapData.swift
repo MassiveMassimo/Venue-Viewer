@@ -120,12 +120,12 @@ class MapData {
         
         // Process landmarks
         landmarks = data.landmarks.map { landmarkData in
-            let position = landmarkData.position.cgPoint
-            let entrancePoint = findNearestPathPoint(from: position)
+            let touchPosition = landmarkData.position.cgPoint // Original JSON position
+            let entrancePoint = findNearestPathPoint(from: touchPosition) // Calculated entrance point based on paths
             
             return Landmark(
                 name: landmarkData.name,
-                labelPosition: position,
+                touchPosition: touchPosition,
                 entrancePoint: entrancePoint
             )
         }

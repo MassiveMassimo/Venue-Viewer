@@ -29,7 +29,7 @@ struct LocationPicker: View {
             } label: {
                 HStack(spacing: 4) {
                     Text(selection.name)
-                        .foregroundColor(selection.entrancePoint == .zero ? .secondary : .primary)
+                        .foregroundColor(selection.entrancePoint == .zero ? .secondary : .primary) // Check entrancePoint for navigation validity
                         .lineLimit(1)
                     
                     Image(systemName: "chevron.down")

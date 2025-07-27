@@ -6,17 +6,11 @@ struct LandmarkTouchAreaView: View {
     let onTap: (Landmark) -> Void
     
     var body: some View {
-        // Invisible tappable area (30x30)
+        // Larger invisible tappable area (50x50) with right offset
         Rectangle()
-            .fill(Color.clear)
-            .frame(width: 30, height: 30)
-            .overlay(
-                // The actual visible orange circle as touch target
-                Circle()
-                    .fill(Color.orange)
-                    .frame(width: 30, height: 30)
-            )
-            .position(position)
+            .fill(Color.white.opacity(0.001)) // Nearly invisible but still tappable
+            .frame(width: 50, height: 50)
+            .position(x: position.x + 15, y: position.y) // Shift 15 points to the right
             .onTapGesture {
                 onTap(landmark)
             }

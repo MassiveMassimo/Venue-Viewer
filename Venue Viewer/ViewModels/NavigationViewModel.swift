@@ -4,8 +4,10 @@ import Observation
 @Observable
 class NavigationViewModel {
     // MARK: - Properties (no need for @Published)
-    var selectedDestination = Landmark(name: "Select destination", labelPosition: .zero, entrancePoint: .zero)
-    var selectedStartingPoint = Landmark(name: "Select starting point", labelPosition: .zero, entrancePoint: .zero)
+    var selectedDestination = Landmark(name: "Select destination", touchPosition: .zero, entrancePoint: .zero) // User-selectable destination landmark
+    var selectedStartingPoint = Landmark(name: "Select starting point", touchPosition: .zero, entrancePoint: .zero) // User-selectable starting landmark
+    var isLandmarkDetailSheetPresented: Bool = false
+    var selectedLandmark: Landmark?
     var resultDistance: CGFloat = 0
     var mapPathVertices: [Vertex] = []
     var mapPathDrawnPercentage: CGFloat = 0
@@ -30,6 +32,7 @@ class NavigationViewModel {
     }
     
     var hasValidSelection: Bool {
+        // Check entrancePoint validity for navigation - ensures landmarks have calculated navigation points
         selectedStartingPoint.entrancePoint != .zero &&
         selectedDestination.entrancePoint != .zero
     }
@@ -42,6 +45,7 @@ class NavigationViewModel {
     func findRoute() {
         guard validateSelection() else { return }
         
+        // Use entrancePoint coordinates for pathfinding - these are guaranteed to be on navigable paths
         let startPoint = selectedStartingPoint.entrancePoint
         let endPoint = selectedDestination.entrancePoint
         
@@ -87,7 +91,12 @@ class NavigationViewModel {
     
     private func showAlert(title: String, message: String) {
         // In production, you'd use a proper alert system
-        // For now, this is a placeholder
-        print("Alert: \(title) - \(message)")
+        // For now, this is silently handled
+    }
+    
+    // MARK: - Sheet Management
+    func closeControlsAndShowLandmarkDetail() {
+        // This will be called by ContentView to coordinate sheet transitions
+        // The actual implementation is handled in ContentView
     }
 }

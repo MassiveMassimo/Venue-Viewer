@@ -4,7 +4,7 @@ import SwiftUI
 func DistanceFormula(from: CGPoint, to: CGPoint) -> CGFloat {
     let squaredDistance = (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
     return sqrt(squaredDistance)
-}
+} // Used for calculating distances between touchPosition and entrancePoint
 
 func isNearPoint(_ p1: CGPoint, _ p2: CGPoint) -> Bool {
     return abs(p1.x - p2.x) < 1 && abs(p1.y - p2.y) < 1

@@ -13,15 +13,25 @@ struct ContentView: View {
                 // Background map view
                 MapCanvasView(viewModel: viewModel)
                     .ignoresSafeArea(.all)
-                // 2. Attach the sheet directly to the background view
+                // Original Controls Sheet
                     .sheet(isPresented: $showingControls) {
-                        print("sheet shown")
+                        // Sheet presentation
                     } content: {
                         ControlsSheetView(viewModel: viewModel, sheetDetent: $sheetDetent)
                             .presentationDetents([.height(120), .medium, .large], selection: $sheetDetent)
-                            .presentationBackgroundInteraction(.enabled(upThrough: .height(120)))
+                            .presentationBackgroundInteraction(.enabled(upThrough: .medium))
                             .presentationDragIndicator(.visible)
                             .interactiveDismissDisabled(true)
+                    }
+                // Landmark Detail Sheet
+                    .sheet(isPresented: $viewModel.isLandmarkDetailSheetPresented) {
+                        // When landmark detail sheet is dismissed, restore controls sheet
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            showingControls = true
+                        }
+                    } content: {
+                        LandmarkDetailSheet(landmark: viewModel.selectedLandmark)
+                            .presentationDetents([.medium])
                     }
                 
                 // UI controls that should remain on top and clickable
@@ -57,6 +67,18 @@ struct ContentView: View {
                     showingControls = false
                 } else {
                     showingControls = true
+                }
+            }
+            .onChange(of: viewModel.selectedLandmark) { _, newLandmark in
+                if newLandmark != nil {
+                    // Close controls sheet first
+                    showingControls = false
+                    // Show landmark detail sheet after a brief delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation {
+                            viewModel.isLandmarkDetailSheetPresented = true
+                        }
+                    }
                 }
             }
             .navigationDestination(isPresented: $isTrackingViewActive) {
