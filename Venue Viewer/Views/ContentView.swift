@@ -4,6 +4,7 @@ import SwiftUI
 enum SheetState {
     case controls
     case landmarkDetail
+    case navigation
     case none
 }
 
@@ -13,56 +14,72 @@ struct ContentView: View {
     @State private var isTrackingViewActive = false
     @State private var sheetDetent: PresentationDetent = .height(120)
     
-    // Computed properties for cleaner sheet management
-    private var showingControls: Bool {
-        currentSheet == .controls && !isTrackingViewActive
+    private var shouldShowSheet: Bool {
+        switch currentSheet {
+        case .controls:
+            return !viewModel.isInNavigationMode
+        case .landmarkDetail:
+            return !viewModel.isInNavigationMode
+        case .navigation:
+            return viewModel.isInNavigationMode
+        case .none:
+            return false
+        }
     }
-    
-    private var showingLandmarkDetail: Bool {
-        currentSheet == .landmarkDetail
-    }
-    
+
     private func setupViewModelHooks() {
-        // Hook for sheet state changes
         viewModel.onSheetStateChanged = { newState in
-            // Update the current sheet state when the view model requests it
             self.currentSheet = newState
         }
-        
-        // Hook for landmark detail dismissal
         viewModel.onLandmarkDetailDismissed = {
-            // Additional cleanup when landmark detail is dismissed
-            // This ensures proper state synchronization and can handle
-            // any additional UI updates needed when returning to controls
+            // Handle additional cleanup when landmark detail is dismissed
+        }
+    }
+    
+    @ViewBuilder
+    private func currentSheetContent() -> some View {
+        switch currentSheet {
+        case .controls:
+            ControlsSheetView(viewModel: viewModel, sheetDetent: $sheetDetent)
+                .presentationDetents([.height(120), .medium, .large], selection: $sheetDetent)
+                .presentationBackgroundInteraction(.enabled(upThrough: .medium))
+                .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled(true)
+        case .landmarkDetail:
+            LandmarkDetailSheet(
+                landmark: viewModel.selectedLandmark,
+                viewModel: viewModel
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        case .navigation:
+            NavigationBottomSheetView(viewModel: viewModel)
+                .presentationDetents([.height(180)])
+                .presentationBackgroundInteraction(.enabled)
+                .presentationDragIndicator(.visible)
+        case .none:
+            EmptyView()
         }
     }
     
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background map view
                 MapCanvasView(viewModel: viewModel)
                     .ignoresSafeArea(.all)
-                    .sheet(isPresented: .constant(showingControls)) {
-                        ControlsSheetView(viewModel: viewModel, sheetDetent: $sheetDetent)
-                            .presentationDetents([.height(120), .medium, .large], selection: $sheetDetent)
-                            .presentationBackgroundInteraction(.enabled(upThrough: .medium))
-                            .presentationDragIndicator(.visible)
-                            .interactiveDismissDisabled(true)
-                    }
-                    .sheet(isPresented: .constant(showingLandmarkDetail)) {
-                        currentSheet = .controls
+                    .sheet(isPresented: .constant(shouldShowSheet)) {
+                        if currentSheet == .landmarkDetail {
+                            currentSheet = .controls
+                        }
                     } content: {
-                        LandmarkDetailSheet(
-                            landmark: viewModel.selectedLandmark,
-                            viewModel: viewModel
-                        )
-                            .presentationDetents([.medium])
+                        currentSheetContent()
                     }
                 
-                // Location tracking button
                 VStack {
-                    HStack {
+                    if viewModel.isInNavigationMode {
+                        NavigationHeaderView(viewModel: viewModel)
+                        Spacer()
+                    } else {
                         Spacer()
                         Button(action: { isTrackingViewActive = true }) {
                             Image(systemName: "location.circle.fill")
@@ -76,9 +93,8 @@ struct ContentView: View {
                                 )
                         }
                         .padding(.trailing, 20)
+                        .padding(.top, 50)
                     }
-                    .padding(.top, 50)
-                    Spacer()
                 }
             }
             .onChange(of: viewModel.selectedDestination) { _, _ in
@@ -88,7 +104,16 @@ struct ContentView: View {
                 viewModel.clearResults()
             }
             .onChange(of: viewModel.selectedLandmark) { _, newLandmark in
-                currentSheet = newLandmark != nil ? .landmarkDetail : .controls
+                if !viewModel.isInNavigationMode {
+                    currentSheet = newLandmark != nil ? .landmarkDetail : .controls
+                }
+            }
+            .onChange(of: viewModel.isInNavigationMode) { _, isInNavigation in
+                if isInNavigation {
+                    currentSheet = .navigation
+                } else {
+                    currentSheet = .controls
+                }
             }
             .navigationDestination(isPresented: $isTrackingViewActive) {
                 LocationTrackingView()

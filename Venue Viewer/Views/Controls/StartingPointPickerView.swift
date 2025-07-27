@@ -50,15 +50,6 @@ struct StartingPointPickerView: View {
                         dismiss()
                     }
                 }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        // Dismiss both picker and detail sheet, trigger route finding if appropriate
-                        viewModel.dismissPickerAndDetailSheet()
-                        onStartingPointSelected()
-                    }
-                    .disabled(viewModel.selectedStartingPoint.entrancePoint == .zero)
-                }
             }
         }
         .presentationDetents([.medium, .large])
@@ -68,6 +59,10 @@ struct StartingPointPickerView: View {
     private func selectStartingPoint(_ landmark: Landmark) {
         // Use the new handler method which includes route finding logic
         viewModel.handleStartingPointSelection(landmark)
+        
+        // Dismiss the picker and trigger callback for immediate navigation transition
+        onStartingPointSelected()
+        dismiss()
     }
 }
 

@@ -6,6 +6,7 @@ class NavigationViewModel {
     // MARK: - Properties (no need for @Published)
     var selectedDestination = Landmark(name: "Select destination", touchPosition: .zero, entrancePoint: .zero) // User-selectable destination landmark
     var selectedStartingPoint = Landmark(name: "Select starting point", touchPosition: .zero, entrancePoint: .zero) // User-selectable starting landmark
+    var isInNavigationMode: Bool = false
     var isLandmarkDetailSheetPresented: Bool = false
     var selectedLandmark: Landmark?
     var isPickerPresented: Bool = false
@@ -75,6 +76,24 @@ class NavigationViewModel {
         }
     }
     
+    func exitNavigation() {
+        // Reset navigation mode
+        isInNavigationMode = false
+        
+        // Clear all results and paths
+        clearResults()
+        
+        // Reset selected landmarks if needed
+        selectedStartingPoint = Landmark(name: "Select starting point", touchPosition: .zero, entrancePoint: .zero)
+        selectedDestination = Landmark(name: "Select destination", touchPosition: .zero, entrancePoint: .zero)
+        
+        // Clear selected landmark to avoid conflicts
+        selectedLandmark = nil
+        
+        // Notify to show controls sheet again
+        onSheetStateChanged?(.controls)
+    }
+    
     // MARK: - Private Methods
     private func validateSelection() -> Bool {
         guard hasValidSelection else {
@@ -125,9 +144,17 @@ class NavigationViewModel {
     }
     
     // MARK: - Picker Selection Logic
-    func handleStartingPointSelection(_ selectedLandmark: Landmark) {
+    func handleStartingPointSelection(_ landmark: Landmark) {
         // Update the selected starting point
-        selectedStartingPoint = selectedLandmark
+        selectedStartingPoint = landmark
+        
+        // Set navigation mode to true
+        isInNavigationMode = true
+        
+        // Dismiss all presented sheets
+        isPickerPresented = false
+        selectedLandmark = nil
+        onSheetStateChanged?(.none)
         
         // Clear any existing routes
         clearResults()
