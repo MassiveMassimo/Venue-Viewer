@@ -4,6 +4,7 @@ struct ContentView: View {
     @State private var viewModel = NavigationViewModel()
     @State private var showingControls = true
     @State private var isTrackingViewActive: Bool = false
+    @State private var sheetDetent: PresentationDetent = .height(120)
     
     var body: some View {
         // 1. Add a NavigationStack to enable NavigationLink
@@ -16,8 +17,8 @@ struct ContentView: View {
                     .sheet(isPresented: $showingControls) {
                         print("sheet shown")
                     } content: {
-                        ControlsSheetView(viewModel: viewModel)
-                            .presentationDetents([.height(120), .large])
+                        ControlsSheetView(viewModel: viewModel, sheetDetent: $sheetDetent)
+                            .presentationDetents([.height(120), .medium, .large], selection: $sheetDetent)
                             .presentationBackgroundInteraction(.enabled(upThrough: .height(120)))
                             .presentationDragIndicator(.visible)
                             .interactiveDismissDisabled(true)
@@ -69,6 +70,7 @@ struct ContentView: View {
 
 struct ControlsSheetView: View {
     @Bindable var viewModel: NavigationViewModel
+    @Binding var sheetDetent: PresentationDetent
     
     var body: some View {
         VStack(spacing: 16) {
@@ -110,6 +112,12 @@ struct ControlsSheetView: View {
             Spacer()
         }
         .background(Color(.systemBackground))
+        .onChange(of: viewModel.resultDistance) { oldValue, newValue in
+            // When a route is found (distance transitions from 0 to nonzero), minimize the sheet
+            if oldValue == 0 && newValue != 0 {
+                sheetDetent = .height(120)
+            }
+        }
     }
 }
 
