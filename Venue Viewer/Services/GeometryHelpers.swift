@@ -42,38 +42,38 @@ func numberToSeconds(number: CGFloat) -> String {
     return "\(Int(seconds))"
 }
 
-// MARK: - Image Display and Coordinate Transformation
+// MARK: - Coordinate System Display and Transformation
 
-/// Represents the display properties of an image with scaledToFit mode
-struct ImageDisplayFrame {
-    /// The actual displayed size of the image within the container
+/// Represents the display properties of a coordinate system displayed with scaledToFit mode
+struct CoordinateDisplayFrame {
+    /// The actual displayed size of the coordinate system within the container
     let displaySize: CGSize
-    /// The frame of the displayed image within the container (includes position)
+    /// The frame of the displayed coordinate system within the container (includes position)
     let displayFrame: CGRect
-    /// The scale factor applied to fit the image
+    /// The scale factor applied to fit the coordinate system
     let scaleFactor: CGFloat
-    /// The offset from the container's origin to the image's origin
+    /// The offset from the container's origin to the coordinate system's origin
     let offset: CGPoint
 }
 
-/// Calculates the display frame and properties for an image with scaledToFit mode
+/// Calculates the display frame and properties for a coordinate system with scaledToFit mode
 /// - Parameters:
-///   - originalImageSize: The original size of the image (e.g., 1097×2415)
+///   - originalSize: The original size of the coordinate system bounds
 ///   - containerSize: The size of the container view
-/// - Returns: ImageDisplayFrame containing all display properties
-func calculateImageDisplayFrame(originalImageSize: CGSize, containerSize: CGSize) -> ImageDisplayFrame {
-    // Calculate scale factor to fit the image within the container
-    let scaleX = containerSize.width / originalImageSize.width
-    let scaleY = containerSize.height / originalImageSize.height
+/// - Returns: CoordinateDisplayFrame containing all display properties
+func calculateCoordinateDisplayFrame(originalSize: CGSize, containerSize: CGSize) -> CoordinateDisplayFrame {
+    // Calculate scale factor to fit the coordinate system within the container
+    let scaleX = containerSize.width / originalSize.width
+    let scaleY = containerSize.height / originalSize.height
     let scaleFactor = min(scaleX, scaleY) // scaledToFit uses the smaller scale
     
     // Calculate the displayed size
     let displaySize = CGSize(
-        width: originalImageSize.width * scaleFactor,
-        height: originalImageSize.height * scaleFactor
+        width: originalSize.width * scaleFactor,
+        height: originalSize.height * scaleFactor
     )
     
-    // Calculate offset to center the image in the container
+    // Calculate offset to center the coordinate system in the container
     let offset = CGPoint(
         x: (containerSize.width - displaySize.width) / 2,
         y: (containerSize.height - displaySize.height) / 2
@@ -87,7 +87,7 @@ func calculateImageDisplayFrame(originalImageSize: CGSize, containerSize: CGSize
         height: displaySize.height
     )
     
-    return ImageDisplayFrame(
+    return CoordinateDisplayFrame(
         displaySize: displaySize,
         displayFrame: displayFrame,
         scaleFactor: scaleFactor,
@@ -95,37 +95,62 @@ func calculateImageDisplayFrame(originalImageSize: CGSize, containerSize: CGSize
     )
 }
 
-/// Transforms a point from original image coordinates to display coordinates
+/// Transforms a point from original coordinate space to display coordinates
 /// - Parameters:
-///   - point: Point in original image coordinate space (e.g., within 1097×2415)
-///   - imageDisplayFrame: The display frame properties of the image
+///   - point: Point in original coordinate space
+///   - coordinateDisplayFrame: The display frame properties of the coordinate system
 /// - Returns: Point in the display coordinate space
-func transformPointToDisplay(point: CGPoint, imageDisplayFrame: ImageDisplayFrame) -> CGPoint {
+func transformPointToDisplay(point: CGPoint, coordinateDisplayFrame: CoordinateDisplayFrame) -> CGPoint {
     return CGPoint(
-        x: imageDisplayFrame.displayFrame.minX + point.x * imageDisplayFrame.scaleFactor,
-        y: imageDisplayFrame.displayFrame.minY + point.y * imageDisplayFrame.scaleFactor
+        x: coordinateDisplayFrame.displayFrame.minX + point.x * coordinateDisplayFrame.scaleFactor,
+        y: coordinateDisplayFrame.displayFrame.minY + point.y * coordinateDisplayFrame.scaleFactor
     )
 }
 
-/// Transforms a point from display coordinates back to original image coordinates
+/// Transforms a point from display coordinates back to original coordinate space
 /// - Parameters:
 ///   - point: Point in display coordinate space
-///   - imageDisplayFrame: The display frame properties of the image
-/// - Returns: Point in the original image coordinate space
-func transformPointFromDisplay(point: CGPoint, imageDisplayFrame: ImageDisplayFrame) -> CGPoint {
+///   - coordinateDisplayFrame: The display frame properties of the coordinate system
+/// - Returns: Point in the original coordinate space
+func transformPointFromDisplay(point: CGPoint, coordinateDisplayFrame: CoordinateDisplayFrame) -> CGPoint {
     return CGPoint(
-        x: (point.x - imageDisplayFrame.displayFrame.minX) / imageDisplayFrame.scaleFactor,
-        y: (point.y - imageDisplayFrame.displayFrame.minY) / imageDisplayFrame.scaleFactor
+        x: (point.x - coordinateDisplayFrame.displayFrame.minX) / coordinateDisplayFrame.scaleFactor,
+        y: (point.y - coordinateDisplayFrame.displayFrame.minY) / coordinateDisplayFrame.scaleFactor
     )
 }
 
-/// Convenience function specifically for the map image (1097×2415)
+/// Transforms a point from original coordinate space to display coordinates
 /// - Parameters:
-///   - point: Point in original map coordinate space
+///   - point: Point in original coordinate space
+///   - originalSize: The original size of the coordinate system
 ///   - containerSize: The size of the container view
 /// - Returns: Point in the display coordinate space
-func transformMapPointToDisplay(point: CGPoint, containerSize: CGSize) -> CGPoint {
-    let mapSize = CGSize(width: 1097, height: 2415)
-    let displayFrame = calculateImageDisplayFrame(originalImageSize: mapSize, containerSize: containerSize)
-    return transformPointToDisplay(point: point, imageDisplayFrame: displayFrame)
+func transformPointToDisplay(point: CGPoint, originalSize: CGSize, containerSize: CGSize) -> CGPoint {
+    let displayFrame = calculateCoordinateDisplayFrame(originalSize: originalSize, containerSize: containerSize)
+    return transformPointToDisplay(point: point, coordinateDisplayFrame: displayFrame)
+}
+
+// MARK: - Backward Compatibility Aliases
+
+/// Legacy alias for CoordinateDisplayFrame - use CoordinateDisplayFrame instead
+typealias ImageDisplayFrame = CoordinateDisplayFrame
+
+/// Legacy function - use calculateCoordinateDisplayFrame instead
+func calculateImageDisplayFrame(originalImageSize: CGSize, containerSize: CGSize) -> ImageDisplayFrame {
+    return calculateCoordinateDisplayFrame(originalSize: originalImageSize, containerSize: containerSize)
+}
+
+/// Legacy function with imageDisplayFrame parameter - use coordinateDisplayFrame version instead
+func transformPointToDisplay(point: CGPoint, imageDisplayFrame: ImageDisplayFrame) -> CGPoint {
+    return transformPointToDisplay(point: point, coordinateDisplayFrame: imageDisplayFrame)
+}
+
+/// Legacy function with imageDisplayFrame parameter - use coordinateDisplayFrame version instead
+func transformPointFromDisplay(point: CGPoint, imageDisplayFrame: ImageDisplayFrame) -> CGPoint {
+    return transformPointFromDisplay(point: point, coordinateDisplayFrame: imageDisplayFrame)
+}
+
+/// Legacy function - use transformPointToDisplay(point:originalSize:containerSize:) instead
+func transformMapPointToDisplay(point: CGPoint, originalImageSize: CGSize, containerSize: CGSize) -> CGPoint {
+    return transformPointToDisplay(point: point, originalSize: originalImageSize, containerSize: containerSize)
 }

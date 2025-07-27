@@ -2,32 +2,38 @@ import SwiftUI
 
 struct MapCanvasView: View {
     let viewModel: NavigationViewModel
-    @State private var imageDisplayFrame: ImageDisplayFrame?
+    @State private var coordinateDisplayFrame: CoordinateDisplayFrame?
+    private let imageName: String
+    
+    init(viewModel: NavigationViewModel, imageName: String = "gop_map") {
+        self.viewModel = viewModel
+        self.imageName = imageName
+    }
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Map image
-                Image("gop_map")
+                // Background image
+                Image(imageName)
                     .resizable()
                     .scaledToFit()
                     .onAppear {
-                        updateImageDisplayFrame(containerSize: geometry.size)
+                        updateCoordinateDisplayFrame(containerSize: geometry.size)
                     }
                     .onChange(of: geometry.size) { _, newSize in
-                        updateImageDisplayFrame(containerSize: newSize)
+                        updateCoordinateDisplayFrame(containerSize: newSize)
                     }
                 
                 // All overlays positioned using proper coordinate transformation
-                if let displayFrame = imageDisplayFrame {
-                    // Map paths (hallways)
-                    MapPathView(hallways: viewModel.hallways, imageDisplayFrame: displayFrame)
+                if let displayFrame = coordinateDisplayFrame {
+                    // Coordinate paths (hallways)
+                    MapPathView(hallways: viewModel.hallways, coordinateDisplayFrame: displayFrame)
                     
                     // Landmark entrance points
                     ForEach(viewModel.landmarks) { landmark in
                         let displayPosition = transformPointToDisplay(
                             point: landmark.entrancePoint,
-                            imageDisplayFrame: displayFrame
+                            coordinateDisplayFrame: displayFrame
                         )
                         Circle()
                             .fill(Color.orange.opacity(0.2))
@@ -40,14 +46,14 @@ struct MapCanvasView: View {
                         Path { path in
                             let firstDisplayPoint = transformPointToDisplay(
                                 point: viewModel.mapPathVertices.first!.point,
-                                imageDisplayFrame: displayFrame
+                                coordinateDisplayFrame: displayFrame
                             )
                             path.move(to: firstDisplayPoint)
                             
                             for vertex in viewModel.mapPathVertices {
                                 let displayPoint = transformPointToDisplay(
                                     point: vertex.point,
-                                    imageDisplayFrame: displayFrame
+                                    coordinateDisplayFrame: displayFrame
                                 )
                                 path.addLine(to: displayPoint)
                             }
@@ -61,7 +67,7 @@ struct MapCanvasView: View {
                     if viewModel.selectedStartingPoint.entrancePoint != .zero {
                         let startPosition = transformPointToDisplay(
                             point: viewModel.selectedStartingPoint.entrancePoint,
-                            imageDisplayFrame: displayFrame
+                            coordinateDisplayFrame: displayFrame
                         )
                         MapMarkerView(
                             position: startPosition,
@@ -74,7 +80,7 @@ struct MapCanvasView: View {
                     if viewModel.selectedDestination.entrancePoint != .zero {
                         let endPosition = transformPointToDisplay(
                             point: viewModel.selectedDestination.entrancePoint,
-                            imageDisplayFrame: displayFrame
+                            coordinateDisplayFrame: displayFrame
                         )
                         MapMarkerView(
                             position: endPosition,
@@ -84,25 +90,28 @@ struct MapCanvasView: View {
                     }
                 }
             }
-            .coordinateSpace(name: "mapContainer")
+            .coordinateSpace(name: "coordinateContainer")
         }
         .ignoresSafeArea()
     }
     
     // MARK: - Private Functions
     
-    /// Updates the image display frame when the container size changes
-    private func updateImageDisplayFrame(containerSize: CGSize) {
-        let mapSize = getMapImageSize()
-        imageDisplayFrame = calculateImageDisplayFrame(
-            originalImageSize: mapSize,
+    /// Updates the coordinate display frame when the container size changes
+    private func updateCoordinateDisplayFrame(containerSize: CGSize) {
+        let imageSize = getImageSize()
+        coordinateDisplayFrame = calculateCoordinateDisplayFrame(
+            originalSize: imageSize,
             containerSize: containerSize
         )
     }
     
-    /// Gets the original map image size (1097×2415)
-    private func getMapImageSize() -> CGSize {
-        // Return the actual map dimensions
-        return CGSize(width: 1097, height: 2415)
+    /// Gets the original image size dynamically
+    private func getImageSize() -> CGSize {
+        guard let uiImage = UIImage(named: imageName) else {
+            // Fallback to a reasonable default if image not found
+            return CGSize(width: 1000, height: 1000)
+        }
+        return uiImage.size
     }
 }
