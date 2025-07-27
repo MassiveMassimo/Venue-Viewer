@@ -83,7 +83,7 @@ struct ControlsSheetView: View {
             }
             .padding(.horizontal, 20)
             
-            // Controls Section
+            // Navigation Controls
             VStack(spacing: 12) {
                 LocationPicker(
                     title: "From:",
