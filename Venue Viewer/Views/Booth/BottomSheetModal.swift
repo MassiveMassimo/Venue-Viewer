@@ -16,6 +16,8 @@ struct BottomSheetModal: View {
     @State private var isBrandOffersPresented = false
     @State private var isBoothTrafficPresented = false
     @State private var isFilterPresented = false
+    @State private var isDetailPresented = false
+    @State private var selectedBooth : Booth? = nil
     
     @State var brandOptions: Set<String> = []
     @State var boothTrafficOptions: Set<String> = []
@@ -28,6 +30,17 @@ struct BottomSheetModal: View {
         allBooths.filter { booth in
             let matchesSearch = searchText.isEmpty || booth.boothName.localizedCaseInsensitiveContains(searchText)
             //                let matchesBrand = brandOptions.isEmpty || !Set(booth.flashSaleSchedule).isDisjoint(with: brandOptions)
+            
+            // temp, because the data currently only have flash sale
+            let matchesBrand: Bool = {
+                if brandOptions.isEmpty {
+                    return true
+                }
+                if brandOptions.contains("Flash Sale") {
+                    return !booth.flashSaleSchedule.isEmpty
+                }
+                return true
+            }()
             
             let matchesCategory = categoriesOptions.isEmpty || !Set(booth.categories).isDisjoint(with: categoriesOptions)
             
@@ -43,7 +56,7 @@ struct BottomSheetModal: View {
             
             let matchesTraffic = boothTrafficOptions.isEmpty || boothTrafficOptions.contains(trafficLabel)
             
-            return matchesSearch && matchesTraffic && matchesCategory
+            return matchesSearch && matchesTraffic && matchesCategory && matchesBrand
         }
         
     }
@@ -194,7 +207,6 @@ struct BottomSheetModal: View {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(groupedBooths.keys.sorted(), id: \.self) { letter in
                         if let boothsForLetter = groupedBooths[letter], !boothsForLetter.isEmpty {
-                            //TODO: Jadiin navigation link, add BrandDetailCard
                             
                             Text(letter)
                                 .font(.caption)
@@ -212,6 +224,10 @@ struct BottomSheetModal: View {
                                     )
                                     .frame(maxWidth: .infinity, alignment: .center)
                                     .padding(.vertical, 10)
+                                    .onTapGesture() {
+                                        selectedBooth = booth
+                                        //                                        isDetailPresented = true
+                                    }
                                     
                                     if booth.id != boothsForLetter.last?.id {
                                         Divider()
@@ -261,6 +277,13 @@ struct BottomSheetModal: View {
                 .presentationDetents([.fraction(1.0), .large  ])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(24)
+        }
+        .sheet(item: $selectedBooth) { booth in
+            BrandDetailCard(booth: booth)
+                .presentationDetents([.fraction(0.4)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(24)
+            
         }
         .onChange(of: isExpanded) {
             searchText = ""

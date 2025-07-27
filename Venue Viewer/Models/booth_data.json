@@ -83,7 +83,7 @@
       "boothNumber": "F06",
       "hall": "1",
       "categories": ["Dermatology"],
-      "flashSaleSchedule": [],
+      "flashSaleSchedule": ["202507061322"],
       "crowdlevel": 0,
       "mapCoordinates": [
         { "x": 160, "y": 330 },

@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct BrandDetailCard: View {
+    let booth: Booth
     var body: some View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text("Finally Found You")
+                    Text(booth.boothName)
                         .font(.title3)
                         .fontWeight(.bold)
 
@@ -26,7 +27,7 @@ struct BrandDetailCard: View {
                         .cornerRadius(12)
                 }
 
-                Text("Skincare")
+                Text(booth.categories.first ?? "")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.bottom, 12)
@@ -53,7 +54,7 @@ struct BrandDetailCard: View {
                         .frame(width: 1, height:20)
                         .foregroundColor(.gray.opacity(0.4))
 
-                    Text("Hall A")
+                    Text("Hall \(booth.hall)")
                 }
                 .font(.subheadline)
                 .padding(.top, 4)
@@ -97,6 +98,6 @@ struct BrandDetailCard: View {
         }
     }
 
-#Preview {
-    BrandDetailCard()
-}
+//#Preview {
+//    BrandDetailCard()
+//}
