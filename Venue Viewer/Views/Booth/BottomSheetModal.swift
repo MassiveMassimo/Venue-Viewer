@@ -178,7 +178,7 @@ struct BottomSheetModal: View {
                 LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(groupedBooths.keys.sorted(), id: \.self) { letter in
                         if let boothsForLetter = groupedBooths[letter], !boothsForLetter.isEmpty {
-                            //TODO: Jadiin navigation link, add booth detail
+                            //TODO: Jadiin navigation link, add BrandDetailCard
                             
                             Text(letter)
                                 .font(.caption)
