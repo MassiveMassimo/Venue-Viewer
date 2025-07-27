@@ -22,6 +22,21 @@ struct ContentView: View {
         currentSheet == .landmarkDetail
     }
     
+    private func setupViewModelHooks() {
+        // Hook for sheet state changes
+        viewModel.onSheetStateChanged = { newState in
+            // Update the current sheet state when the view model requests it
+            self.currentSheet = newState
+        }
+        
+        // Hook for landmark detail dismissal
+        viewModel.onLandmarkDetailDismissed = {
+            // Additional cleanup when landmark detail is dismissed
+            // This ensures proper state synchronization and can handle
+            // any additional UI updates needed when returning to controls
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -38,7 +53,10 @@ struct ContentView: View {
                     .sheet(isPresented: .constant(showingLandmarkDetail)) {
                         currentSheet = .controls
                     } content: {
-                        LandmarkDetailSheet(landmark: viewModel.selectedLandmark)
+                        LandmarkDetailSheet(
+                            landmark: viewModel.selectedLandmark,
+                            viewModel: viewModel
+                        )
                             .presentationDetents([.medium])
                     }
                 
@@ -74,6 +92,9 @@ struct ContentView: View {
             }
             .navigationDestination(isPresented: $isTrackingViewActive) {
                 LocationTrackingView()
+            }
+            .onAppear {
+                setupViewModelHooks()
             }
         }
     }

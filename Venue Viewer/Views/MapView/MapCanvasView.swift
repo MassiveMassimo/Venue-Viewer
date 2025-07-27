@@ -215,10 +215,10 @@ struct MapCanvasView: View {
     // MARK: - Private Functions
     
     private func handleLandmarkTap(_ landmark: Landmark) {
-        // Store the selected landmark and show detail sheet
+        // Store the selected landmark
         viewModel.selectedLandmark = landmark
         
-        // Close controls sheet first, then show landmark detail sheet
+        // Use the coordination method to properly transition sheets
         viewModel.closeControlsAndShowLandmarkDetail()
     }
     

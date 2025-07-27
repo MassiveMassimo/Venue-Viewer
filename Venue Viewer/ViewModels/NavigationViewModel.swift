@@ -8,6 +8,7 @@ class NavigationViewModel {
     var selectedStartingPoint = Landmark(name: "Select starting point", touchPosition: .zero, entrancePoint: .zero) // User-selectable starting landmark
     var isLandmarkDetailSheetPresented: Bool = false
     var selectedLandmark: Landmark?
+    var isPickerPresented: Bool = false
     var resultDistance: CGFloat = 0
     var mapPathVertices: [Vertex] = []
     var mapPathDrawnPercentage: CGFloat = 0
@@ -95,8 +96,55 @@ class NavigationViewModel {
     }
     
     // MARK: - Sheet Management
+    
+    /// Closure to notify parent view about sheet state changes
+    var onSheetStateChanged: ((SheetState) -> Void)?
+    
+    /// Closure to handle landmark detail sheet dismissal
+    var onLandmarkDetailDismissed: (() -> Void)?
+    
     func closeControlsAndShowLandmarkDetail() {
-        // This will be called by ContentView to coordinate sheet transitions
-        // The actual implementation is handled in ContentView
+        // Notify parent view about the sheet transition
+        onSheetStateChanged?(.landmarkDetail)
+    }
+    
+    func dismissLandmarkDetailSheet() {
+        // Clear the selected landmark to trigger sheet dismissal
+        selectedLandmark = nil
+        
+        // Notify parent view about the dismissal
+        onLandmarkDetailDismissed?()
+        
+        // Return to controls sheet
+        onSheetStateChanged?(.controls)
+    }
+    
+    func handleSheetDismissal() {
+        // Reset any transient state when sheets are dismissed
+        isPickerPresented = false
+    }
+    
+    // MARK: - Picker Selection Logic
+    func handleStartingPointSelection(_ selectedLandmark: Landmark) {
+        // Update the selected starting point
+        selectedStartingPoint = selectedLandmark
+        
+        // Clear any existing routes
+        clearResults()
+        
+        // Check if we have both starting point and destination selected
+        // and they are different landmarks with valid entrance points
+        if canFindRoute {
+            // Automatically trigger route finding
+            findRoute()
+        }
+    }
+    
+    func dismissPickerAndDetailSheet() {
+        // Dismiss the picker
+        isPickerPresented = false
+        
+        // Clear the selected landmark to dismiss the detail sheet
+        selectedLandmark = nil
     }
 }

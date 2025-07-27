@@ -2,7 +2,9 @@ import SwiftUI
 
 struct LandmarkDetailSheet: View {
     let landmark: Landmark?
+    let viewModel: NavigationViewModel?
     @Environment(\.dismiss) private var dismiss
+    @State private var isPickerPresented = false
     
     var body: some View {
         NavigationStack {
@@ -51,19 +53,13 @@ struct LandmarkDetailSheet: View {
                     
                     // Action buttons
                     VStack(spacing: 12) {
-                        Button("Set as Starting Point") {
-                            // Action to set as starting point
-                            dismiss()
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.large)
-                        
-                        Button("Set as Destination") {
-                            // Action to set as destination
-                            dismiss()
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
+                        NavigateButton(
+                            landmark: landmark,
+                            viewModel: viewModel,
+                            onNavigate: {
+                                dismiss()
+                            }
+                        )
                     }
                     .padding(.top, 20)
                     
@@ -88,11 +84,66 @@ struct LandmarkDetailSheet: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Done") {
+                        // Use the ViewModel's dismissal method for proper coordination
+                        viewModel?.dismissLandmarkDetailSheet()
                         dismiss()
                     }
+                }
+            }
+            .sheet(isPresented: Binding(
+                get: { viewModel?.isPickerPresented ?? false },
+                set: { newValue in viewModel?.isPickerPresented = newValue }
+            )) {
+                if let viewModel = viewModel {
+                    StartingPointPickerView(
+                        viewModel: viewModel,
+                        onStartingPointSelected: {
+                            // Use the ViewModel's coordinated dismissal method
+                            viewModel.dismissPickerAndDetailSheet()
+                        }
+                    )
                 }
             }
         }
     }
 }
 
+// MARK: - Navigate Button Component
+
+struct NavigateButton: View {
+    let landmark: Landmark
+    let viewModel: NavigationViewModel?
+    let onNavigate: () -> Void
+    
+    var body: some View {
+        Button(action: {
+            guard let viewModel = viewModel else { return }
+            
+            // Set the current landmark as the destination
+            viewModel.selectedDestination = landmark
+            
+            // Clear any existing routes
+            viewModel.clearResults()
+            
+            // Show the picker for starting point selection
+            viewModel.isPickerPresented = true
+        }) {
+            HStack {
+                Image(systemName: "location.north.line.fill")
+                Text("Navigate")
+                    .fontWeight(.semibold)
+            }
+            .foregroundColor(.white)
+            .font(.system(size: 18))
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.blue)
+            )
+            .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+        }
+        .disabled(landmark.entrancePoint == .zero)
+        .opacity(landmark.entrancePoint == .zero ? 0.6 : 1.0)
+    }
+}
