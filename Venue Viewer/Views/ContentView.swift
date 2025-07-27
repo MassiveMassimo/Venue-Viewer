@@ -1,44 +1,51 @@
 import SwiftUI
 
+// MARK: - Sheet State Management
+enum SheetState {
+    case controls
+    case landmarkDetail
+    case none
+}
+
 struct ContentView: View {
     @State private var viewModel = NavigationViewModel()
-    @State private var showingControls = true
-    @State private var isTrackingViewActive: Bool = false
+    @State private var currentSheet: SheetState = .controls
+    @State private var isTrackingViewActive = false
     @State private var sheetDetent: PresentationDetent = .height(120)
     
+    // Computed properties for cleaner sheet management
+    private var showingControls: Bool {
+        currentSheet == .controls && !isTrackingViewActive
+    }
+    
+    private var showingLandmarkDetail: Bool {
+        currentSheet == .landmarkDetail
+    }
+    
     var body: some View {
-        // 1. Add a NavigationStack to enable NavigationLink
         NavigationStack {
             ZStack {
                 // Background map view
                 MapCanvasView(viewModel: viewModel)
                     .ignoresSafeArea(.all)
-                // Original Controls Sheet
-                    .sheet(isPresented: $showingControls) {
-                        // Sheet presentation
-                    } content: {
+                    .sheet(isPresented: .constant(showingControls)) {
                         ControlsSheetView(viewModel: viewModel, sheetDetent: $sheetDetent)
                             .presentationDetents([.height(120), .medium, .large], selection: $sheetDetent)
                             .presentationBackgroundInteraction(.enabled(upThrough: .medium))
                             .presentationDragIndicator(.visible)
                             .interactiveDismissDisabled(true)
                     }
-                // Landmark Detail Sheet
-                    .sheet(isPresented: $viewModel.isLandmarkDetailSheetPresented) {
-                        // When landmark detail sheet is dismissed, restore controls sheet
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            showingControls = true
-                        }
+                    .sheet(isPresented: .constant(showingLandmarkDetail)) {
+                        currentSheet = .controls
                     } content: {
                         LandmarkDetailSheet(landmark: viewModel.selectedLandmark)
                             .presentationDetents([.medium])
                     }
                 
-                // UI controls that should remain on top and clickable
+                // Location tracking button
                 VStack {
                     HStack {
                         Spacer()
-                        // Replaced NavigationLink with Button as per instructions
                         Button(action: { isTrackingViewActive = true }) {
                             Image(systemName: "location.circle.fill")
                                 .font(.title2)
@@ -52,7 +59,7 @@ struct ContentView: View {
                         }
                         .padding(.trailing, 20)
                     }
-                    .padding(.top, 50) // Account for status bar
+                    .padding(.top, 50)
                     Spacer()
                 }
             }
@@ -62,24 +69,8 @@ struct ContentView: View {
             .onChange(of: viewModel.selectedStartingPoint) { _, _ in
                 viewModel.clearResults()
             }
-            .onChange(of: isTrackingViewActive) { _, newValue in
-                if newValue {
-                    showingControls = false
-                } else {
-                    showingControls = true
-                }
-            }
             .onChange(of: viewModel.selectedLandmark) { _, newLandmark in
-                if newLandmark != nil {
-                    // Close controls sheet first
-                    showingControls = false
-                    // Show landmark detail sheet after a brief delay
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        withAnimation {
-                            viewModel.isLandmarkDetailSheetPresented = true
-                        }
-                    }
-                }
+                currentSheet = newLandmark != nil ? .landmarkDetail : .controls
             }
             .navigationDestination(isPresented: $isTrackingViewActive) {
                 LocationTrackingView()
