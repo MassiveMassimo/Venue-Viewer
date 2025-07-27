@@ -50,7 +50,7 @@ struct MapCanvasView: View {
     // Alert states
     @State private var showingAlert = false
     @State private var alertMessage = ""
-
+    
     init(viewModel: NavigationViewModel, imageName: String = "gop_map") {
         self.viewModel = viewModel
         self.imageName = imageName
@@ -91,92 +91,6 @@ struct MapCanvasView: View {
         } message: {
             Text(alertMessage)
         }
-    }
-    
-    @ViewBuilder
-    private func mapContent(in geometry: GeometryProxy) -> some View {
-        ZStack {
-            // Background image
-            Image(imageName)
-                .resizable()
-                .scaledToFit()
-                .onAppear {
-                    updateCoordinateDisplayFrame(containerSize: geometry.size)
-                }
-                .onChange(of: geometry.size) { _, newSize in
-                    updateCoordinateDisplayFrame(containerSize: newSize)
-                }
-            
-            // All overlays positioned using proper coordinate transformation
-            if let displayFrame = coordinateDisplayFrame {
-                // Coordinate paths (hallways)
-                MapPathView(hallways: viewModel.hallways, coordinateDisplayFrame: displayFrame)
-                
-                // Landmark entrance points with touch areas
-                ForEach(viewModel.landmarks) { landmark in
-                    let displayPosition = transformPointToDisplay(
-                        point: landmark.entrancePoint,
-                        coordinateDisplayFrame: displayFrame
-                    )
-                    LandmarkTouchAreaView(
-                        landmark: landmark,
-                        position: displayPosition,
-                        onTap: handleLandmarkTap
-                    )
-                    // Ensure landmarks are rendered above map gesture overlay
-                    .zIndex(100)
-                }
-                
-                // Animated route path
-                if !viewModel.mapPathVertices.isEmpty {
-                    Path { path in
-                        let firstDisplayPoint = transformPointToDisplay(
-                            point: viewModel.mapPathVertices.first!.point,
-                            coordinateDisplayFrame: displayFrame
-                        )
-                        path.move(to: firstDisplayPoint)
-                        
-                        for vertex in viewModel.mapPathVertices {
-                            let displayPoint = transformPointToDisplay(
-                                point: vertex.point,
-                                coordinateDisplayFrame: displayFrame
-                            )
-                            path.addLine(to: displayPoint)
-                        }
-                    }
-                    .trim(from: 0, to: viewModel.mapPathDrawnPercentage)
-                    .stroke(Color.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                    .shadow(color: Color.black.opacity(0.3), radius: 3)
-                }
-                
-                // Starting point marker
-                if viewModel.selectedStartingPoint.entrancePoint != .zero {
-                    let startPosition = transformPointToDisplay(
-                        point: viewModel.selectedStartingPoint.entrancePoint,
-                        coordinateDisplayFrame: displayFrame
-                    )
-                    MapMarkerView(
-                        position: startPosition,
-                        label: "Start",
-                        color: .green
-                    )
-                }
-                
-                // Destination marker
-                if viewModel.selectedDestination.entrancePoint != .zero {
-                    let endPosition = transformPointToDisplay(
-                        point: viewModel.selectedDestination.entrancePoint,
-                        coordinateDisplayFrame: displayFrame
-                    )
-                    MapMarkerView(
-                        position: endPosition,
-                        label: "End",
-                        color: .red
-                    )
-                }
-            }
-        }
-        .coordinateSpace(name: "coordinateContainer")
     }
     
     @ViewBuilder
@@ -275,26 +189,35 @@ struct MapCanvasView: View {
     private func applyTransformations(to point: CGPoint, in geometry: GeometryProxy) -> CGPoint {
         let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
         
-        // Apply offset with scale
-        var transformedPoint = CGPoint(
-            x: (point.x - center.x) * scale + center.x + offset.width,
-            y: (point.y - center.y) * scale + center.y + offset.height
+        // Step 1: Translate point to origin (center-based coordinates)
+        let translatedPoint = CGPoint(
+            x: point.x - center.x,
+            y: point.y - center.y
         )
         
-        // Apply rotation (around center)
+        // Step 2: Apply scale
+        let scaledPoint = CGPoint(
+            x: translatedPoint.x * scale,
+            y: translatedPoint.y * scale
+        )
+        
+        // Step 3: Apply rotation
         let rotationRadians = rotation.radians
         let cosAngle = cos(rotationRadians)
         let sinAngle = sin(rotationRadians)
-
-        let translatedX = transformedPoint.x - center.x
-        let translatedY = transformedPoint.y - center.y
-
-        transformedPoint = CGPoint(
-            x: center.x + translatedX * cosAngle - translatedY * sinAngle,
-            y: center.y + translatedX * sinAngle + translatedY * cosAngle
+        
+        let rotatedPoint = CGPoint(
+            x: scaledPoint.x * cosAngle - scaledPoint.y * sinAngle,
+            y: scaledPoint.x * sinAngle + scaledPoint.y * cosAngle
         )
         
-        return transformedPoint
+        // Step 4: Translate back to screen coordinates and apply offset
+        let finalPoint = CGPoint(
+            x: rotatedPoint.x + center.x + offset.width,
+            y: rotatedPoint.y + center.y + offset.height
+        )
+        
+        return finalPoint
     }
     
     // MARK: - Private Functions
@@ -445,44 +368,12 @@ struct MapGestureView: UIViewRepresentable {
         }
         
         @objc func handleRotation(_ gesture: UIRotationGestureRecognizer) {
-            guard let view = gesture.view else { return }
-            
             switch gesture.state {
             case .began:
                 lastRotation = parent.rotation
-                anchorPoint = gesture.location(in: view)
                 
             case .changed:
-                let rotationDelta = Angle(radians: Double(gesture.rotation))
-                let totalRotation = lastRotation + rotationDelta
-                
-                // Calculate anchor point relative to view center
-                let viewCenter = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-                let anchorOffset = CGPoint(
-                    x: anchorPoint.x - viewCenter.x,
-                    y: anchorPoint.y - viewCenter.y
-                )
-                
-                // Calculate how the offset point rotates around the anchor
-                let offsetFromAnchor = CGPoint(
-                    x: parent.offset.width - anchorOffset.x,
-                    y: parent.offset.height - anchorOffset.y
-                )
-                
-                let angleDiff = Double(gesture.rotation) - (parent.rotation - lastRotation).radians
-                let cos = cos(angleDiff)
-                let sin = sin(angleDiff)
-                
-                let rotatedOffset = CGPoint(
-                    x: offsetFromAnchor.x * cos - offsetFromAnchor.y * sin,
-                    y: offsetFromAnchor.x * sin + offsetFromAnchor.y * cos
-                )
-                
-                parent.offset = CGSize(
-                    width: rotatedOffset.x + anchorOffset.x,
-                    height: rotatedOffset.y + anchorOffset.y
-                )
-                parent.rotation = totalRotation
+                parent.rotation = lastRotation + Angle(radians: Double(gesture.rotation))
                 
             default:
                 break
