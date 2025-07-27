@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "gop_map_light.jpeg",
+      "filename" : "map.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,6 @@
           "value" : "dark"
         }
       ],
-      "filename" : "gop_map_dark.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },

@@ -10,7 +10,7 @@ struct ContentView: View {
         NavigationStack {
             ZStack {
                 // Background map view
-                MapView(viewModel: viewModel)
+                MapCanvasView(viewModel: viewModel)
                     .ignoresSafeArea(.all)
                 // 2. Attach the sheet directly to the background view
                     .sheet(isPresented: $showingControls) {

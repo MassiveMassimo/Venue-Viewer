@@ -1,13 +1,14 @@
 import SwiftUI
 
-struct MapView: View {
+struct MapCanvasView: View {
     let viewModel: NavigationViewModel
     
     var body: some View {
         ZStack {
-            // Background
-            Rectangle()
-                .fill(Color(.systemGray6))
+            Image("gop_map")
+                .resizable()
+                .scaledToFit()
+                .ignoresSafeArea()
             
             // Map paths (hallways)
             MapPathView(hallways: viewModel.hallways)
@@ -19,6 +20,8 @@ struct MapView: View {
                     .frame(width: 6, height: 6)
                     .position(landmark.entrancePoint)
             }
+            
+            
             
             // Animated route path
             if !viewModel.mapPathVertices.isEmpty {
