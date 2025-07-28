@@ -94,6 +94,17 @@ struct HeaderView: View {
                             .fill(Color(.systemGray6))
                     )
             }
+            
+            NavigationLink(destination: BoothListView()) {
+                Image(systemName: "map.circle.fill")
+                    .font(.title2)
+                    .foregroundColor(.blue)
+                    .padding(8)
+                    .background(
+                        Circle()
+                            .fill(Color(.systemGray6))
+                    )
+            }
         }
     }
 }
