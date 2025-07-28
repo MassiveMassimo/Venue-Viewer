@@ -82,6 +82,9 @@ struct CategoriesSheetView: View {
         }
         .background(Color.white)
         .cornerRadius(24)
+        .onAppear() {
+            selectedCategories = allCategories.filter { selectedOptions.contains($0.name) }
+        }
         .onChange(of: selectedOptions) {
             newValue in
                 selectedCategories.removeAll { category in
