@@ -16,7 +16,6 @@ struct BottomSheetModal: View {
     @State private var isBrandOffersPresented = false
     @State private var isBoothTrafficPresented = false
     @State private var isFilterPresented = false
-    @State private var isDetailPresented = false
     @State private var selectedBooth : Booth? = nil
     
     @State var brandOptions: Set<String> = []
@@ -226,7 +225,6 @@ struct BottomSheetModal: View {
                                     .padding(.vertical, 10)
                                     .onTapGesture() {
                                         selectedBooth = booth
-                                        //                                        isDetailPresented = true
                                     }
                                     
                                     if booth.id != boothsForLetter.last?.id {
