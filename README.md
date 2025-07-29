@@ -74,7 +74,7 @@ Tap to see booth info, offers, and traffic trends.
 |--------------------------------------------------------|-------------------------|
 |                                                        | Product Manager Lead    |
 | [@ikhsandhf](https://github.com/ikhsandhf)             | Design Lead             |
-| ⁠[@GedeKW][https://github.com/GedeKW]                   | UI & UX Designer        |
+| ⁠[@GedeKW] (https://github.com/GedeKW)                  | UI & UX Designer        |
 | [@MassiveMassimo](https://github.com/MassiveMassimo/)  | Tech Lead               |
 | [@Reinhart C](https://github.com/reinhart-c)           | Tech Engineer           |
 | [@mirabellachn](https://github.com/mirabellachn)       | Frontend Engineer       |
