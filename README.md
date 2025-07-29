@@ -64,7 +64,7 @@ Tap to see booth info, offers, and traffic trends.
 - 🧭 AR navigation mode using device camera  
 - 📱 Home screen widgets for next booths to visit  
 - ⌚ Apple Watch support for fast wrist-based navigation  
-- ☁️ Admin dashboard for organizers to upload booth maps and live traffic  
+- ☁️ Admin dashboard for organizers to upload booth maps and live traffic     
 
 ---
 
@@ -73,11 +73,11 @@ Tap to see booth info, offers, and traffic trends.
 | Name                                                   | Roles                   |
 |--------------------------------------------------------|-------------------------|
 |                                                        | Product Manager Lead    |
-|                                                        | Design Lead             |
-|                                                        | Tech Lead               |
-|                                                        | Tech Member             |
-|                                                        | Tech Member             |
-| [@mirabellachn](https://github.com/mirabellachn)       | Tech Member             |
+| [@ikhsandhf](https://github.com/ikhsandhf)             | Design Lead             |
+| ⁠[@GedeKW][https://github.com/GedeKW]                   | UI & UX Designer        |
+| [@MassiveMassimo](https://github.com/MassiveMassimo/)  | Tech Lead               |
+| [@Reinhart C](https://github.com/reinhart-c)           | Tech Engineer           |
+| [@mirabellachn](https://github.com/mirabellachn)       | Frontend Engineer       |
 
 ---
 
