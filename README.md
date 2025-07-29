@@ -72,7 +72,7 @@ Tap to see booth info, offers, and traffic trends.
 
 | Name                                                   | Roles                   |
 |--------------------------------------------------------|-------------------------|
-|                                                        | Product Manager Lead    |
+|                                                        | Product Manager         |
 | [@ikhsandhf](https://github.com/ikhsandhf)             | Design Lead             |
 | ⁠[@GedeKW](https://github.com/GedeKW)                   | UI & UX Designer        |
 | [@MassiveMassimo](https://github.com/MassiveMassimo/)  | Tech Lead               |
