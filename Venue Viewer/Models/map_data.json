@@ -3,6 +3,7 @@
         "scaleFactor": 0.25,
         "nearPointTolerance": 1.0,
         "linePointTolerance": 3.0
+
     },
     "pathSegments": [
         {

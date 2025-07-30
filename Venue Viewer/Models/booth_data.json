@@ -1,0 +1,223 @@
+{
+  "DataName": "List Map",
+  "version": "1.0",
+  "booths": [
+    {
+      "id": 1,
+      "boothName": "Avory",
+      "boothNumber": "F01",
+      "hall": "1",
+      "categories": ["Skincare"],
+      "flashSaleSchedule": [
+        {
+          "start": "2025-07-29T10:00:00Z",
+          "end": "2025-07-29T11:00:00Z"
+        }
+      ],
+      "freebies": true,
+      "tester": false,
+      "locName": "Collab 07",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 110, "y": 305 },
+        { "x": 120, "y": 315 },
+        { "x": 110, "y": 315 },
+        { "x": 120, "y": 305 }
+      ]
+    },
+    {
+      "id": 2,
+      "boothName": "Avoskin",
+      "boothNumber": "F02",
+      "hall": "1",
+      "categories": ["Skincare", "Make Up"],
+      "flashSaleSchedule": [
+        {
+          "start": "2025-07-29T17:00:00Z",
+          "end": "2025-07-29T18:00:00Z"
+        }
+      ],
+      "freebies": false,
+      "tester": true,
+      "locName": "Collab 07A",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 120, "y": 310 },
+        { "x": 130, "y": 320 },
+        { "x": 120, "y": 320 },
+        { "x": 130, "y": 310 }
+      ]
+    },
+    {
+      "id": 3,
+      "boothName": "Bali Body",
+      "boothNumber": "F03",
+      "hall": "2",
+      "categories": ["Body", "Hair", "Fragrance"],
+      "flashSaleSchedule": [],
+      "freebies": true,
+      "tester": true,
+      "locName": "Desk 1",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 130, "y": 315 },
+        { "x": 140, "y": 325 },
+        { "x": 130, "y": 325 },
+        { "x": 140, "y": 315 }
+      ]
+    },
+    {
+      "id": 4,
+      "boothName": "Biore",
+      "boothNumber": "F04",
+      "hall": "2",
+      "categories": ["Skincare"],
+      "flashSaleSchedule": [
+        {
+          "start": "2025-07-30T14:00:00Z",
+          "end": "2025-07-30T14:30:00Z"
+        },
+        {
+          "start": "2025-07-30T16:00:00Z",
+          "end": "2025-07-30T17:00:00Z"
+        }
+      ],
+      "freebies": false,
+      "tester": false,
+      "locName": "Desk 2",
+      "crowdlevel": 1,
+      "mapCoordinates": [
+        { "x": 140, "y": 320 },
+        { "x": 150, "y": 330 },
+        { "x": 140, "y": 330 },
+        { "x": 150, "y": 320 }
+      ]
+    },
+    {
+      "id": 5,
+      "boothName": "Cetaphil",
+      "boothNumber": "F05",
+      "hall": "1",
+      "categories": ["Skincare", "Men's care"],
+      "flashSaleSchedule": [],
+      "freebies": true,
+      "tester": false,
+      "locName": "Desk 3",
+      "crowdlevel": 2,
+      "mapCoordinates": [
+        { "x": 150, "y": 325 },
+        { "x": 160, "y": 335 },
+        { "x": 150, "y": 335 },
+        { "x": 160, "y": 325 }
+      ]
+    },
+    {
+      "id": 6,
+      "boothName": "CeraVe",
+      "boothNumber": "F06",
+      "hall": "1",
+      "categories": ["Skincare", "Beauty Suplement"],
+      "flashSaleSchedule": [],
+      "freebies": false,
+      "tester": false,
+      "locName": "Desk 4",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 160, "y": 330 },
+        { "x": 170, "y": 340 },
+        { "x": 160, "y": 340 },
+        { "x": 170, "y": 330 }
+      ]
+    },
+    {
+      "id": 7,
+      "boothName": "Drunk Elephant",
+      "boothNumber": "F07",
+      "hall": "1",
+      "categories": ["Skincare", "Make Up", "Fragrance"],
+      "flashSaleSchedule": [],
+      "freebies": true,
+      "tester": true,
+      "locName": "Desk 5",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 170, "y": 335 },
+        { "x": 180, "y": 345 },
+        { "x": 170, "y": 345 },
+        { "x": 180, "y": 335 }
+      ]
+    },
+    {
+      "id": 8,
+      "boothName": "Emina",
+      "boothNumber": "F08",
+      "hall": "1",
+      "categories": ["Make Up"],
+      "flashSaleSchedule": [],
+      "freebies": false,
+      "tester": false,
+      "locName": "Desk 6",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 180, "y": 340 },
+        { "x": 190, "y": 350 },
+        { "x": 180, "y": 350 },
+        { "x": 190, "y": 340 }
+      ]
+    },
+    {
+      "id": 9,
+      "boothName": "Erha",
+      "boothNumber": "F09",
+      "hall": "1",
+      "categories": ["Salon & Clinic"],
+      "flashSaleSchedule": [],
+      "freebies": false,
+      "tester": true,
+      "locName": "Desk 7",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 190, "y": 345 },
+        { "x": 200, "y": 355 },
+        { "x": 190, "y": 355 },
+        { "x": 200, "y": 345 }
+      ]
+    },
+    {
+      "id": 10,
+      "boothName": "Freeman",
+      "boothNumber": "F10",
+      "hall": "1",
+      "categories": ["Body"],
+      "flashSaleSchedule": [],
+      "freebies": true,
+      "tester": true,
+      "locName": "Desk 8",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 200, "y": 350 },
+        { "x": 210, "y": 360 },
+        { "x": 200, "y": 360 },
+        { "x": 210, "y": 350 }
+      ]
+    },
+    {
+      "id": 11,
+      "boothName": "Garnier",
+      "boothNumber": "F11",
+      "hall": "1",
+      "categories": ["Hair", "Skincare"],
+      "flashSaleSchedule": [],
+      "freebies": false,
+      "tester": false,
+      "locName": "Desk 9",
+      "crowdlevel": 0,
+      "mapCoordinates": [
+        { "x": 210, "y": 355 },
+        { "x": 220, "y": 365 },
+        { "x": 210, "y": 365 },
+        { "x": 220, "y": 355 }
+      ]
+    }
+  ]
+}

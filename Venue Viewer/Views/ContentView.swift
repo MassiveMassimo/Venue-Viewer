@@ -5,58 +5,64 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // Header
-                HeaderView()
+            ZStack {
+                VStack(spacing: 0) {
+                    // Header
+                    HeaderView()
+                        .padding(.horizontal, 20)
+                        .padding(.top)
+                    
+                    // Map
+                    MapView(viewModel: viewModel)
+                        .frame(width: 220)
+                        .frame(maxHeight: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+                        .padding(.vertical, 20)
+                    
+                    // Controls Section
+                    VStack(spacing: 12) {
+                        LocationPicker(
+                            title: "From:",
+                            selection: $viewModel.selectedStartingPoint,
+                            landmarks: viewModel.landmarks
+                        )
+                        
+                        LocationPicker(
+                            title: "To:",
+                            selection: $viewModel.selectedDestination,
+                            landmarks: viewModel.landmarks
+                        )
+                        
+                        if viewModel.resultDistance != 0 {
+                            RouteInfoView(distance: viewModel.resultDistance)
+                                .animation(.easeInOut, value: viewModel.resultDistance)
+                        }
+                        
+                        FindRouteButton(action: viewModel.findRoute)
+                            .disabled(!viewModel.canFindRoute)
+                            .opacity(viewModel.canFindRoute ? 1 : 0.6)
+                            .animation(.easeInOut, value: viewModel.canFindRoute)
+                    }
                     .padding(.horizontal, 20)
-                    .padding(.top)
-                
-                // Map
-                MapView(viewModel: viewModel)
-                    .frame(width: 220)
-                    .frame(maxHeight: .infinity)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                    .padding(.vertical, 20)
-                
-                // Controls Section
-                VStack(spacing: 12) {
-                    LocationPicker(
-                        title: "From:",
-                        selection: $viewModel.selectedStartingPoint,
-                        landmarks: viewModel.landmarks
-                    )
                     
-                    LocationPicker(
-                        title: "To:",
-                        selection: $viewModel.selectedDestination,
-                        landmarks: viewModel.landmarks
-                    )
-                    
-                    if viewModel.resultDistance != 0 {
-                        RouteInfoView(distance: viewModel.resultDistance)
-                            .animation(.easeInOut, value: viewModel.resultDistance)
-                    }
-                    
-                    FindRouteButton(action: viewModel.findRoute)
-                        .disabled(!viewModel.canFindRoute)
-                        .opacity(viewModel.canFindRoute ? 1 : 0.6)
-                        .animation(.easeInOut, value: viewModel.canFindRoute)
+                    Spacer()
                 }
-                .padding(.horizontal, 20)
-                
-                Spacer()
-            }
-            .background(Color(.systemBackground))
-            .navigationBarHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: LocationTrackingView()) {
-                        Image(systemName: "location.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(.blue)
+                .background(Color(.systemBackground))
+                .navigationBarHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(destination: LocationTrackingView()) {
+                            Image(systemName: "location.circle.fill")
+                                .font(.title2)
+                                .foregroundColor(.blue)
+                        }
                     }
                 }
+                .padding([.bottom], 130)
+                
+                BoothListView(selectedDest: $viewModel.selectedDestination, landmarks: viewModel.landmarks)
+                    .shadow(radius: 5.0)
             }
         }
         .onChange(of: viewModel.selectedDestination) { _, _ in
