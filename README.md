@@ -25,12 +25,10 @@
 ## 📸 Visuals
 
 <p align="center">
-  <img width="393" height="852" alt="MAP Ver #1" src="https://github.com/user-attachments/assets/2b74b925-fbfa-4974-a76e-bb2e4071a0cf" />
-  <img width="393" height="852" alt="Filter View (Default State)" src="https://github.com/user-attachments/assets/0dfb121e-d158-41a7-8d44-7ac91988fe85" />
-  <img width="393" height="852" alt="Booth Detail Fix" src="https://github.com/user-attachments/assets/01066292-2188-45fb-bc11-f78c5241d10b" />
+  <img src="https://github.com/user-attachments/assets/2b74b925-fbfa-4974-a76e-bb2e4071a0cf" width="150" />
+  <img src="https://github.com/user-attachments/assets/0dfb121e-d158-41a7-8d44-7ac91988fe85" width="150" />
+  <img src="https://github.com/user-attachments/assets/01066292-2188-45fb-bc11-f78c5241d10b" width="150" />
 </p>
-
-
 
 
 ---
