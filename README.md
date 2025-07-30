@@ -97,7 +97,7 @@ Contributions are welcome! Please follow these steps:
 
 | Name | Roles |
 |---|---|
-| [@Xtephenz] (https://github.com/ikhsandhf)   | Product Manager |
+| [@Xtephenz] (https://github.com/Xtephenz)   | Product Manager |
 | [@ikhsandhf](https://github.com/ikhsandhf) | Design Lead |
 | [@GedeKW](https://github.com/GedeKW) | UI & UX Designer |
 | [@MassiveMassimo](https://github.com/MassiveMassimo/) | Tech Lead |
