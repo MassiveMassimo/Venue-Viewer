@@ -4,8 +4,12 @@ import Observation
 @Observable
 class NavigationViewModel {
     // MARK: - Properties (no need for @Published)
-    var selectedDestination = Landmark(name: "Select destination", labelPosition: .zero, entrancePoint: .zero)
-    var selectedStartingPoint = Landmark(name: "Select starting point", labelPosition: .zero, entrancePoint: .zero)
+    var selectedDestination = Landmark(name: "Select destination", touchPosition: .zero, entrancePoint: .zero) // User-selectable destination landmark
+    var selectedStartingPoint = Landmark(name: "Select starting point", touchPosition: .zero, entrancePoint: .zero) // User-selectable starting landmark
+    var isInNavigationMode: Bool = false
+    var isLandmarkDetailSheetPresented: Bool = false
+    var selectedLandmark: Landmark?
+    var isPickerPresented: Bool = false
     var resultDistance: CGFloat = 0
     var mapPathVertices: [Vertex] = []
     var mapPathDrawnPercentage: CGFloat = 0
@@ -30,6 +34,7 @@ class NavigationViewModel {
     }
     
     var hasValidSelection: Bool {
+        // Check entrancePoint validity for navigation - ensures landmarks have calculated navigation points
         selectedStartingPoint.entrancePoint != .zero &&
         selectedDestination.entrancePoint != .zero
     }
@@ -42,6 +47,7 @@ class NavigationViewModel {
     func findRoute() {
         guard validateSelection() else { return }
         
+        // Use entrancePoint coordinates for pathfinding - these are guaranteed to be on navigable paths
         let startPoint = selectedStartingPoint.entrancePoint
         let endPoint = selectedDestination.entrancePoint
         
@@ -70,6 +76,24 @@ class NavigationViewModel {
         }
     }
     
+    func exitNavigation() {
+        // Reset navigation mode
+        isInNavigationMode = false
+        
+        // Clear all results and paths
+        clearResults()
+        
+        // Reset selected landmarks if needed
+        selectedStartingPoint = Landmark(name: "Select starting point", touchPosition: .zero, entrancePoint: .zero)
+        selectedDestination = Landmark(name: "Select destination", touchPosition: .zero, entrancePoint: .zero)
+        
+        // Clear selected landmark to avoid conflicts
+        selectedLandmark = nil
+        
+        // Notify to show controls sheet again
+        onSheetStateChanged?(.controls)
+    }
+    
     // MARK: - Private Methods
     private func validateSelection() -> Bool {
         guard hasValidSelection else {
@@ -87,7 +111,67 @@ class NavigationViewModel {
     
     private func showAlert(title: String, message: String) {
         // In production, you'd use a proper alert system
-        // For now, this is a placeholder
-        print("Alert: \(title) - \(message)")
+        // For now, this is silently handled
+    }
+    
+    // MARK: - Sheet Management
+    
+    /// Closure to notify parent view about sheet state changes
+    var onSheetStateChanged: ((SheetState) -> Void)?
+    
+    /// Closure to handle landmark detail sheet dismissal
+    var onLandmarkDetailDismissed: (() -> Void)?
+    
+    func closeControlsAndShowLandmarkDetail() {
+        // Notify parent view about the sheet transition
+        onSheetStateChanged?(.landmarkDetail)
+    }
+    
+    func dismissLandmarkDetailSheet() {
+        // Clear the selected landmark to trigger sheet dismissal
+        selectedLandmark = nil
+        
+        // Notify parent view about the dismissal
+        onLandmarkDetailDismissed?()
+        
+        // Return to controls sheet
+        onSheetStateChanged?(.controls)
+    }
+    
+    func handleSheetDismissal() {
+        // Reset any transient state when sheets are dismissed
+        isPickerPresented = false
+    }
+    
+    // MARK: - Picker Selection Logic
+    func handleStartingPointSelection(_ landmark: Landmark) {
+        // Update the selected starting point
+        selectedStartingPoint = landmark
+        
+        // Set navigation mode to true
+        isInNavigationMode = true
+        
+        // Dismiss all presented sheets
+        isPickerPresented = false
+        selectedLandmark = nil
+        onSheetStateChanged?(.none)
+        
+        // Clear any existing routes
+        clearResults()
+        
+        // Check if we have both starting point and destination selected
+        // and they are different landmarks with valid entrance points
+        if canFindRoute {
+            // Automatically trigger route finding
+            findRoute()
+        }
+    }
+    
+    func dismissPickerAndDetailSheet() {
+        // Dismiss the picker
+        isPickerPresented = false
+        
+        // Clear the selected landmark to dismiss the detail sheet
+        selectedLandmark = nil
     }
 }

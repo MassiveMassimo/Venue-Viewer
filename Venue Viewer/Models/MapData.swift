@@ -41,7 +41,7 @@ struct MapConfiguration {
     let linePointTolerance: CGFloat
     
     static let `default` = MapConfiguration(
-        scaleFactor: 0.25,
+        scaleFactor: 1.0,
         nearPointTolerance: 1.0,
         linePointTolerance: 3.0
     )
@@ -115,19 +115,17 @@ class MapData {
         
         // Process hallways
         hallways = data.pathSegments.map { segment in
-            let scaledStart = scalePoint(segment.start.cgPoint)
-            let scaledEnd = scalePoint(segment.end.cgPoint)
-            return Hallway(start: scaledStart, end: scaledEnd)
+            return Hallway(start: segment.start.cgPoint, end: segment.end.cgPoint)
         }
         
         // Process landmarks
         landmarks = data.landmarks.map { landmarkData in
-            let scaledPosition = scalePoint(landmarkData.position.cgPoint)
-            let entrancePoint = findNearestPathPoint(from: scaledPosition)
+            let touchPosition = landmarkData.position.cgPoint // Original JSON position
+            let entrancePoint = findNearestPathPoint(from: touchPosition) // Calculated entrance point based on paths
             
             return Landmark(
                 name: landmarkData.name,
-                labelPosition: scaledPosition,
+                touchPosition: touchPosition,
                 entrancePoint: entrancePoint
             )
         }
