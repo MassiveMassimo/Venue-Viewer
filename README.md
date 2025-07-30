@@ -25,10 +25,13 @@
 ## 📸 Visuals
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/8356546/184422122-b1d7f3f4-3b49-4f1c-8b2d-6b4a1b1f1b1a.png" width="250" alt="HerWay App Screenshot 1" />
-  <img src="https://user-images.githubusercontent.com/8356546/184422122-b1d7f3f4-3b49-4f1c-8b2d-6b4a1b1f1b1a.png" width="250" alt="HerWay App Screenshot 2" />
-  <img src="https://user-images.githubusercontent.com/8356546/184422122-b1d7f3f4-3b49-4f1c-8b2d-6b4a1b1f1b1a.png" width="250" alt="HerWay App Screenshot 3" />
+  <img width="393" height="852" alt="MAP Ver #1" src="https://github.com/user-attachments/assets/2b74b925-fbfa-4974-a76e-bb2e4071a0cf" />
+  <img width="393" height="852" alt="Filter View (Default State)" src="https://github.com/user-attachments/assets/0dfb121e-d158-41a7-8d44-7ac91988fe85" />
+  <img width="393" height="852" alt="Booth Detail Fix" src="https://github.com/user-attachments/assets/01066292-2188-45fb-bc11-f78c5241d10b" />
 </p>
+
+
+
 
 ---
 
