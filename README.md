@@ -3,7 +3,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/platform-iOS-blue.svg" alt="Platform: iOS" />
   <img src="https://img.shields.io/badge/Swift-6.1.2-orange.svg" alt="Swift Version: 6.1.2" />
-  <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT" />
 </p>
 
 **HerWay** is an iOS application that helps users **quickly and confidently navigate indoor venues** such as exhibitions, malls, and event spaces. Unlike traditional maps, HerWay is tailored for **specific events**, giving users the ability to explore **booths**, **filter locations**, and view **real-time crowd density** — all in one app.
