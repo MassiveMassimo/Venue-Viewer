@@ -2,7 +2,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/platform-iOS-blue.svg" alt="Platform: iOS" />
-  <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" alt="Swift Version: 5.0" />
+  <img src="https://img.shields.io/badge/Swift-6.1.2-orange.svg" alt="Swift Version: 6.1.2" />
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT" />
 </p>
 
@@ -104,9 +104,3 @@ Contributions are welcome! Please follow these steps:
 | [@MassiveMassimo](https://github.com/MassiveMassimo/) | Tech Lead |
 | [@Reinhart C](https://github.com/reinhart-c) | Tech Engineer |
 | [@mirabellachn](https://github.com/mirabellachn) | Frontend Engineer |
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
